@@ -1,24 +1,33 @@
 import './App.css';
-import Field from './Components/FieldComponent';
-import Header from './Header/Header';
+import GameField from './Components/Field';
+import { useEffect, useRef } from 'react';
 
 
+// const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
-function App() {
+const App = () => {
 
+  const handleKeyDown = event => {
+    console.log('User pressed: ', event.key);
+  };
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current.focus();
+  }, []);
   return (
-    <>
+    <div>
+      <div
+        ref={ref} tabIndex={-1} onKeyDown={handleKeyDown}>
+        <GameField />
+      </div>
+    </div>
+  );
+};
 
-      <Header></Header>
-      <Field className="field"></Field>
-
-
-    </>
-
-  )
-}
 export default App;
+
 
 
 // // function MakeField() {

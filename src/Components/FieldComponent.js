@@ -1,3 +1,4 @@
+
 import React from "react";
 import Square from "./SquareComponent";
 
@@ -6,9 +7,9 @@ import Square from "./SquareComponent";
 
 
 function Field() {
-    // const fieldSize = 4;//ввод размеров поля
-    let fieldSize = prompt('input field size', 4);
-    fieldSize = +fieldSize;
+    const fieldSize = 4;//ввод размеров поля
+    // let fieldSize = prompt('input field size', 4);
+    // fieldSize = +fieldSize;
 
     let arrRow = [];
     let arrField = [];
@@ -25,6 +26,7 @@ function Field() {
         // BrElement;
         // ReactDOM.createRoot(rootElement).render(<br />);
     }
+
     //Создание поля через MAP
     // let numbers = [0, 1, 2, 3];
     // let FieldRow = numbers.map((number) => <Square key={number}>Square</Square>);
