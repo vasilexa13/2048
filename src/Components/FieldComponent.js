@@ -16,8 +16,7 @@ function Field() {
 
     for (let i = 0; i < fieldSize; i++) {
         for (let j = 0; j < fieldSize; j++) {
-            arrRow[i, j] = (<Square key={String(i) + String(j)
-            }> Square</Square >);
+            arrRow[i, j] = (<Square key={String(i) + String(j)} index={String(i) + String(j)} ></Square >);
         }
         arrField.push(arrRow);
         arrRow = [];

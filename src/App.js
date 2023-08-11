@@ -1,13 +1,14 @@
 import './App.css';
 import GameField from './Components/Field';
 import { useEffect, useRef } from 'react';
+import Square from './Components/SquareComponent';
 
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
-const App = () => {
 
+const App = () => {
   const handleKeyDown = event => {
     console.log('User pressed: ', event.key);
   };
@@ -19,7 +20,8 @@ const App = () => {
   return (
     <div>
       <div
-        ref={ref} tabIndex={-1} onKeyDown={handleKeyDown}>
+        ref={ref} tabIndex={-1} onKeyDown={handleKeyDown}
+      >
         <GameField />
       </div>
     </div>
@@ -28,72 +30,26 @@ const App = () => {
 
 export default App;
 
+// Функция ВКЛЮЧАЕТ последний элемент
+function random(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  let randomNum = Math.floor(Math.random() * (max + 1 - min)) + min;
+  // console.log('сдучайное число:'randomNum);
+  return randomNum;
+}
+
+// Генерация случайного числа 2 или 4... randomNumForInput
+let arrNumForInput = [2, 4, 8, 16];
+arrNumForInput = arrNumForInput.slice(0, 2);
+let randomNumForInput = arrNumForInput[random(0, 1)];
+// console.log('random [2,4]'randomNumForInput);
+
+//Генерация index or key случайной ячейки
+let randomIndex = String(random(0, 3)) + String(random(0, 3));
+// console.log('randomIndex=' + randomIndex);
 
 
-// // function MakeField() {
-// const fieldSize = 4;//РАЗМЕР ПОЛЯ
-// // let array = Array(fieldSize).fill(0);
-// let numbers = [0, 1, 2, 3]
-// const listNumbers = nubers.map((numbers) =>
-//   <li>{numbers}</li>
-// );
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(<ul>{listItems}</ul>);
-
-
-
-
-//   // let fieldRow = array.map((item) => <div className="square__componen" key={item}></div>);
-//   // console.log(fieldRow);
-// // }
-
-// // MakeField()
-
-
-
-
-
-
-// const rootElement = document.getElementById('root');
-// console.log(rootElement);
-// ReactDOM.createRoot(rootElement).render(<h1>2048</h1>);
-
-
-
-// function Square(props, hooks) {
-//   const [value, setValue] = useState(null);
-
-//   // Клик на элементе устанавливает значение setValue('2')
-//   function handleClick() {
-//     setValue('2');
-//   }
-
-
-//   function keyMove() {
-
-//     function getRandomArea(min, max) {
-//       min = Math.ceil(min);
-//       max = Math.floor(max);
-//       let randomAreaNum = Math.floor(Math.random() * (max - min)) + min;
-//       console.log(randomAreaNum);
-//       return randomAreaNum;
-//     }
-//     console.log(props.area);
-//     console.log(hooks);
-//     getRandomArea(0, 16)
-//     setValue('3');
-//   }
-//   // function isAmptyArea() {
-//   // }
-//   return (
-//     <button
-//       className="square"
-//       // onClick={handleClick}//выделение элемента оп клику
-//       onKeyDown={keyMove}
-//     >
-//       {value}
-//     </button >);
-// }
 
 
 
