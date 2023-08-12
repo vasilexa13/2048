@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import Square from './Components/SquareComponent';
 import Field from './Components/FieldComponent';
 import Header from './Header/Header';
+import React from "react";
 
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -35,12 +36,12 @@ const App = (props) => {
     ref.current.focus();
   }, []);
   return (
-    <div>
-
-      <div
+    <React.Fragment>
+      <Header ></Header>
+      <div className='field'
         ref={ref} tabIndex={-1} onKeyDown={handleKeyDown}
       >
-        <Header ></Header>
+
         <Field
           // squareData={randomData}
           fieldSize={fieldData.fieldSize2}
@@ -48,7 +49,7 @@ const App = (props) => {
         {/* data={squareData} */}
 
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 export default App;

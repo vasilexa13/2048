@@ -23,12 +23,6 @@
   }
 }
 
-/* h1 {
-  font-size: 50px;
-  text-align: center;
-  color: rgb(120, 110, 100);
-  border: 1px solid rgb(120, 110, 100);
-} */
 .square__component {
   background: #fff;
   border: 3px solid #999;
@@ -36,14 +30,21 @@
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 90px;
   margin-right: -3px;
   margin-top: -3px;
   padding: 0;
   text-align: center;
-  width: 90px;
+  width: 100px;
 }
 
-br {
-  clear: both;
+.field {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  /* margin-left: -200px; */
+
+  display: inline-grid;
+  grid-template-columns: repeat(4, 25%);
+
+
 }
