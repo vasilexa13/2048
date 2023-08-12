@@ -1,6 +1,11 @@
 function Square(props) {
     return (
-        <div className="square__component">{props.index}</div>
+
+
+        <div className="square__component">{ }</div>
+        // props.data.squareValue
     )
 }
 export default Square;
+
+

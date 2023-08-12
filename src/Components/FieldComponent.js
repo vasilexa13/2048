@@ -2,34 +2,28 @@
 import React from "react";
 import Square from "./SquareComponent";
 
-// const BrElement = (<br>перенос</br>);
-// const rootElement = document.getElementById('root');
 
+function Field(props) {
 
-function Field() {
-    const fieldSize = 4;//ввод размеров поля
-    // let fieldSize = prompt('input field size', 4);
-    // fieldSize = +fieldSize;
+    let fieldSize = +props.fieldSize;//приём размеров поля через props
+
 
     let arrRow = [];
     let arrField = [];
 
+
     for (let i = 0; i < fieldSize; i++) {
         for (let j = 0; j < fieldSize; j++) {
-            arrRow[i, j] = (<Square key={String(i) + String(j)} index={String(i) + String(j)} ></Square >);
+            arrRow[i, j] = (<Square key={String(i) + String(j)} index={String(i) + String(j)}  ></Square >);
+
         }
         arrField.push(arrRow);
         arrRow = [];
 
-        <React.Fragment ><br /></React.Fragment>
-        // BrElement;
-        // ReactDOM.createRoot(rootElement).render(<br />);
+        <React.Fragment ><br /></React.Fragment>//НЕ РАБОТАЕТ!!!!!!!
+
     }
 
-    //Создание поля через MAP
-    // let numbers = [0, 1, 2, 3];
-    // let FieldRow = numbers.map((number) => <Square key={number}>Square</Square>);
-    // let FieldSquare = FieldRow.map(() => FieldRow);
     return (
         arrField
         // FieldRow
