@@ -1,7 +1,9 @@
-function Header() {
+function Header(props) {
+
+
     return (
         <>
-            <h1>2048</h1>
+            <h1 >{props.data[1]}</h1>
         </>
     )
 }

@@ -4,57 +4,63 @@ import Square from './Components/SquareComponent';
 import Field from './Components/FieldComponent';
 import Header from './Header/Header';
 import React from "react";
+// import { configureStore } from '@reduxjs/toolkit';
 
-
-// const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
 // let fieldSquareSize = +prompt('input field size', 4);
 let fieldSquareSize = 4;
 
-const fieldData = {
-  fieldSize2: fieldSquareSize,
-}
-// const randomData = {
-//   randomIndex: randomIndex(),
-//   randomNum: randomNumForInput(),
+// const fieldData = {
+//   fieldSize2: fieldSquareSize,
 // }
+const gamestatus = ['Game Over', 2048];
 
-let arrData = {};
 
 
 
 const App = (props) => {
-  const handleKeyDown = event => {
 
+  const handleKeyDown = (event) => {
+    // let fieldData = '00';
+    // let ;
+    let fieldData = {
+      'fieldIndex': '00',
+      'fieldValue': 2,
+    }
+    fieldData['fieldIndex'] = randomIndex();
+    fieldData['fieldValue'] = randomNumForInput();
     console.log('User pressed: ', event.key);
-    console.log("случайная ячейка:" + randomIndex(), "случайное число:" + randomNumForInput());
+    console.log("случайная ячейка:" + fieldData['fieldIndex'], "случайное число:" + fieldData['fieldValue']);
+    console.log('fieldData=', fieldData);
 
+    arrOfDataApp[fieldData['fieldIndex']] = fieldData['fieldValue'];
+    return fieldData
   };
-  const ref = useRef(null);
-  useEffect(() => {
-    ref.current.focus();
-  }, []);
+  // const ref = useRef(null);
+  // useEffect(() => {
+  //   ref.current.focus();
+  // }, []);
   return (
-    <React.Fragment>
-      <Header ></Header>
+
+    <React.Fragment >
+
+      <Header data={gamestatus}></Header>
       <div className='field'
-        ref={ref} tabIndex={-1} onKeyDown={handleKeyDown}
+        // ref={ref}
+        tabIndex={-1}
+        onKeyDown={handleKeyDown}
       >
-
-        <Field
-          // squareData={randomData}
-          fieldSize={fieldData.fieldSize2}
+        <Field id='Field'
+          onKeyDown={handleKeyDown}
+          data={handleKeyDown}
+        //НЕ РАБОТАЕТ (хотел присвоить через пропсы прокинуть данные fieldData до компонента Square )
         ></Field>
-        {/* data={squareData} */}
-
       </div>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 export default App;
-
-
 
 
 // Функция ВКЛЮЧАЕТ последний элемент
@@ -75,17 +81,26 @@ function randomNumForInput() {
 }
 
 
-
 //Генерация index or key случайной ячейки
+
 function randomIndex() {
   let randomIndex = String(random(0, fieldSquareSize - 1)) + String(random(0, fieldSquareSize - 1));
   return (randomIndex);
 }
+// const randomIndexNum = String(random(0, fieldSquareSize - 1)) + String(random(0, fieldSquareSize - 1));
 
-// let squareData = {
-//   squareIndex: randomIndex(),
-//   squareValue: randomNumForInput(),
-// };
+
+// Создание обьекта с данными
+let arrOfDataApp = {};
+for (let i = 0; i < fieldSquareSize; i++) {
+  for (let j = 0; j < fieldSquareSize; j++) {
+    arrOfDataApp[String(i) + String(j)] = null
+  }
+}
+
+
+
+
 
 
 

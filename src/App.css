@@ -35,16 +35,21 @@
   padding: 0;
   text-align: center;
   width: 100px;
+  height: 100px;
 }
 
 .field {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
-  /* margin-left: -200px; */
-
   display: inline-grid;
   grid-template-columns: repeat(4, 25%);
+}
 
-
+.square__component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  color: #4b4b4b;
 }

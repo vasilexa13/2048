@@ -1,10 +1,16 @@
+import { render } from "@testing-library/react"
+
 function Square(props) {
-    return (
+    if (props.data == props.index) {
+        return (
+            <div className="square__component">{props.value}</div>
+        );
 
-
-        <div className="square__component">{ }</div>
-        // props.data.squareValue
-    )
+    } else {
+        return (
+            <div className="square__component"></div>
+        );
+    }
 }
 export default Square;
 
