@@ -53,7 +53,7 @@ const App = (props) => {
       >
         <Field id='Field'
           onKeyDown={handleKeyDown}
-          data={handleKeyDown}
+        // data={fieldData}
         //НЕ РАБОТАЕТ (хотел присвоить через пропсы прокинуть данные fieldData до компонента Square )
         ></Field>
       </div>
