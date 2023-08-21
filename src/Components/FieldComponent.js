@@ -4,23 +4,17 @@ import Square from "./SquareComponent";
 import Header from "../Header/Header";
 
 const arrOfData = {};
-function Field(props) {
 
+function Field(props, hooks) {
     let fieldSize = +props.fieldSize;//приём размеров поля через props
     fieldSize = 4;
-
-
-    // //проброс данных для ячейки поля
-    // (<Square key={props.fieldData} />)
-    // console.log('!!!');
-
-    // console.log(props.fieldData);
 
 
     let arrRow = [];
     let arrField = [];
     for (let i = 0; i < fieldSize; i++) {
         for (let j = 0; j < fieldSize; j++) {
+
             arrRow[i, j] = (<Square key={String(i) + String(j)} index={String(i) + String(j)}  ></Square >);
             arrOfData[String(i) + String(j)] = null;
         }
@@ -29,9 +23,8 @@ function Field(props) {
     }
 
     return (
-        // console.log(arrOfData),
-        arrOfData,
-        <div className="field" data={props.fieldData}>
+
+        <div className="field" >
             <React.Fragment >
                 {arrField}
             </React.Fragment>
@@ -39,8 +32,11 @@ function Field(props) {
     );
 
 }
+export const arrField = () => arrField;
 
 export default Field;
+
+
 
 
 

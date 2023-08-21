@@ -1,17 +1,39 @@
 import { render } from "@testing-library/react"
+import Field from "./FieldComponent";
+import { randomIndex, randomNumForInput } from "../App";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { arrField } from "./FieldComponent";
+import { handleKeyDown } from "../App.js";
+
+
+// let indexOfField = { randomSquareIndex };
+// console.log(indexOfField);
 
 function Square(props) {
-    if (props.data == props.index) {
-        return (
-            <div className="square__component">{props.value}</div>
-        );
+    // const value = randomIndex();
+    // const [value] = useState(randomIndex);
+    const [data, setData] = useState(randomNumForInput());
 
-    } else {
+
+    // return (<div className="square__component">{data}</div>);
+
+    if (props.index == String(handleKeyDown)) {//ХОЧУ СРАВНИВАТЬ С СЛУЧАЙНО ГЕНЕРИРУЕМОЙ ЯЧЕЙКОЙ
         return (
-            <div className="square__component"></div>
+            <div className="square__component">{data}</div>
+        )
+    }
+    else {
+        return (
+            <div className="square__component">{data * 10}</div>
         );
     }
 }
 export default Square;
+
+
+
+
+
+
 
 
