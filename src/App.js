@@ -5,6 +5,7 @@ import Field from './Components/FieldComponent';
 import Header from './Header/Header';
 import React from "react";
 import { render } from '@testing-library/react';
+import { setData2 } from './Components/SquareComponent';
 // import { configureStore } from '@reduxjs/toolkit';
 
 
@@ -16,12 +17,17 @@ const gamestatus = ['Game Over', 2048];
 
 export const handleKeyDown = (event) => {
   console.log('User pressed: ', event.key);
-  randomIndex();
-  console.log(randomIndex());
-  return randomIndex();
+
+  setData2();
+  // randomIndex();
+  // const [value, setValue] = useState(randomIndex);
+
+  // console.log(randomIndex());
+  // return randomIndex();
 }
 
 const App = (props, hooks) => {
+
 
   // const [arr, setArr] = useState([]);
   return (
@@ -33,7 +39,7 @@ const App = (props, hooks) => {
         // ref={ref}
         tabIndex={-1}
         onKeyDown={handleKeyDown}
-      // onKeyDown={Square}
+      // onClick={handleKeyDown}
       >
         <Field id='Field'
 
