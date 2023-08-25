@@ -14,11 +14,18 @@ let fieldSquareSize = 4;
 
 const gamestatus = ['Game Over', 2048];
 
+// export function setSquareData() {
+//   useState(randomNumForInput());
+//   //   setState(randomNumForInput());
+// }
+
 
 export const handleKeyDown = (event) => {
   console.log('User pressed: ', event.key);
+  seachElement();
 
-  setData2();
+
+
   // randomIndex();
   // const [value, setValue] = useState(randomIndex);
 
@@ -26,9 +33,18 @@ export const handleKeyDown = (event) => {
   // return randomIndex();
 }
 
+//Получение рандомного элемента поля
+export const seachElement = () => {
+  let randomElement = document.getElementsByClassName('square__component')[randomIndex()];
+  console.log(randomElement);
+  // render()
+  return (
+    randomElement
+  );
+}
+
+
 const App = (props, hooks) => {
-
-
   // const [arr, setArr] = useState([]);
   return (
 
@@ -72,5 +88,6 @@ export function randomNumForInput() {
 
 //Генерация index or key случайной ячейки
 export const randomIndex = () => {
-  return (String(random(0, fieldSquareSize - 1)) + String(random(0, fieldSquareSize - 1)))
+  // return (String(random(0, fieldSquareSize - 1)) + String(random(0, fieldSquareSize - 1)))
+  return (String(random(0, fieldSquareSize ** 2 - 1)))
 }
