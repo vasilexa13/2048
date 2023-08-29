@@ -3,17 +3,52 @@ import React from "react";
 import Square from "./SquareComponent";
 import Header from "../Header/Header";
 import { useState } from "react";
-import { handleKeyDown, randomNumForInput } from "../App";
+import { handleKeyDown } from "../App";
+import { gamestatus } from "../functionsAndConst/const";
+import { seachElement } from "../App";
+import { randomNumForInput, randomIndex } from "../functionsAndConst/functions";
+
 
 const arrOfData = {};
 
 function Field(props) {
-
     const [squares, setSquares] = useState(Array(16).fill(null));//!передача состояния Field компоненту
+    const nextSquares = squares.slice();// 
+
+    function gameOver(nextSquares) {
+        let gameStatusFlag = 1;
+        if (nextSquares.includes(null) == false) {
+            gameStatusFlag = 0;
+
+        }
+        return (gamestatus[gameStatusFlag]);
+    }
+
     function handleKey(i) {
-        const nextSquares = squares.slice();
-        nextSquares[i] = randomNumForInput();
-        setSquares(nextSquares);
+        // const nextSquares = squares.slice();
+
+        // while (nextSquares.includes(null) ) {
+        if (nextSquares[i] == null) {
+            nextSquares[i] = randomNumForInput();
+            setSquares(nextSquares)
+            console.log('nextSquares', nextSquares);
+            console.log('nextSquares[i]', nextSquares[i]);
+        }
+        else {
+            handleKey(randomIndex())//рекурсия
+            console.log(`поле ${i} со значением ${nextSquares[i]} существует`);
+            // }
+        }
+        console.log('nextSquares.includes(null)', nextSquares.includes(null));
+
+
+
+        let statusGame = gameOver(nextSquares)
+        // console.log("props-", props);
+        // console.log('status-', status);
+        props.abc(statusGame);
+
+
     }
 
     let fieldSize = +props.fieldSize;//приём размеров поля через props
@@ -22,7 +57,7 @@ function Field(props) {
     let arrRow = [];
     let arrField = [];
     for (let i = 0; i < fieldSize ** 2; i++) {
-        arrField[i] = <Square key={i} index={i} value={squares[i]} onSquareClick={() => handleKey(i)}></Square>
+        arrField[i] = <Square key={i} index={i} value={squares[i]} onSquareClick={() => handleKey(randomIndex())}></Square>
 
 
         // for (let j = 0; j < fieldSize; j++) {
