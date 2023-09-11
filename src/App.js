@@ -15,18 +15,13 @@ import { random, randomNumForInput, randomIndex } from './functionsAndConst/func
 // let fieldSquareSize = +prompt('input field size', 4);
 
 
+// // Получение рандомного элемента поля
+// export const seachElement = () => {
+//   let randomElement = document.getElementsByClassName('square__component')[randomIndex()];
+//   console.log(randomElement);
+// }
 
 
-export const handleKeyDown = (event) => {
-  console.log('User pressed: ', event.key);
-  seachElement();
-}
-
-// Получение рандомного элемента поля
-export const seachElement = () => {
-  let randomElement = document.getElementsByClassName('square__component')[randomIndex()];
-  console.log(randomElement);
-}
 
 
 const App = (props, onSquareClick) => {
@@ -34,22 +29,25 @@ const App = (props, onSquareClick) => {
   const [header, setHeader] = useState(gamestatus[1])
 
 
+
   return (
     <React.Fragment >
       <Header
         data={header}
+
       >
       </Header>
 
       <div id='fieldArea'
-        // ref={ref}
-        tabIndex={-1}
-        onKeyDown={handleKeyDown}
+      // ref={ref}
+      // tabIndex={-1}
+      // onKeyDown={handleKeyDown}
       // onKeyDown={onSquareClick}
 
       >
         <Field id='Field'
           abc={setHeader}
+        // onKeyDown={}
         >
         </Field>
       </div>

@@ -44,6 +44,8 @@
   transform: translate(-50%, 0);
   display: inline-grid;
   grid-template-columns: repeat(4, 25%);
+
+
 }
 
 .square__component {
@@ -52,4 +54,10 @@
   align-items: center;
   font-size: 48px;
   color: #4b4b4b;
+}
+
+.hide {
+  background: rgba(0, 0, 0, .55);
+  z-index: 100;
+  overflow: hidden;
 }

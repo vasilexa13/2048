@@ -4,7 +4,7 @@ import Square from "./SquareComponent";
 import Header from "../Header/Header";
 import { useState } from "react";
 import { handleKeyDown } from "../App";
-import { gamestatus } from "../functionsAndConst/const";
+import { gamestatus, keysArr } from "../functionsAndConst/const";
 import { seachElement } from "../App";
 import { randomNumForInput, randomIndex } from "../functionsAndConst/functions";
 
@@ -12,43 +12,78 @@ import { randomNumForInput, randomIndex } from "../functionsAndConst/functions";
 const arrOfData = {};
 
 function Field(props) {
-    const [squares, setSquares] = useState(Array(16).fill(null));//!передача состояния Field компоненту
-    const nextSquares = squares.slice();// 
+
+    // const [squares, setSquares] = useState(Array(4).fill(Array(4).fill(null)));//!передача состояния Field компоненту ТАКОЕ ЗАПОЛНЕНИЕ НЕ РАБОТАЕТ
+    const [squares, setSquares] = useState(Array([null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]));//!передача состояния Field компоненту
+    const nextSquares = squares.slice(0);
 
     function gameOver(nextSquares) {
         let gameStatusFlag = 1;
-        if (nextSquares.includes(null) == false) {
-            gameStatusFlag = 0;
+        //   !!!УСЛОВИЕ ОКОНЧАНИЯ ИГРЫ БУДЕТ ДРУГОЕ!!!
 
-        }
+        // for (let i = 0; i < fieldSize; i++) {
+        //     if (nextSquares[i].includes(null) == false) {
+        //         gameStatusFlag = 0;
+        //     }
+
+        // }
+
         return (gamestatus[gameStatusFlag]);
     }
 
-    function handleKey(i) {
-        // const nextSquares = squares.slice();
+    function handleKey(i, j, event) {
 
-        // while (nextSquares.includes(null) ) {
-        if (nextSquares[i] == null) {
-            nextSquares[i] = randomNumForInput();
-            setSquares(nextSquares)
-            console.log('nextSquares', nextSquares);
-            console.log('nextSquares[i]', nextSquares[i]);
+        function showingFieldItem() {
+            if (nextSquares[i][j] == null) {
+                nextSquares[i][j] = randomNumForInput();//(?)
+                setSquares(nextSquares);
+            }
+            else {
+                handleKey(randomIndex(), randomIndex(), event)//рекурсия
+            }
         }
-        else {
-            handleKey(randomIndex())//рекурсия
-            console.log(`поле ${i} со значением ${nextSquares[i]} существует`);
-            // }
-        }
-        console.log('nextSquares.includes(null)', nextSquares.includes(null));
-
-
+        setTimeout(showingFieldItem, 0);
 
         let statusGame = gameOver(nextSquares)
-        // console.log("props-", props);
-        // console.log('status-', status);
         props.abc(statusGame);
 
 
+
+
+        // ДВИЖЕНИЕ КУБИКОВ   
+
+        if (event.keyCode == keysArr.right) {
+            for (let coll = 0; coll < 4; coll++) {
+                let emptyElement = [];
+                for (let row = 3; row >= 0; row--) {
+                    let element;
+                    console.log(element);
+
+                    //проветка первого пустого элемента он будет с индексом 0
+                    if (nextSquares[coll][row] == null) {
+                        emptyElement.push(row);
+                    }
+
+                    // перемещение элемента !=null
+                    if (nextSquares[coll][row] != null) {
+                        element = [coll, row];
+                        console.log('coll', coll, 'row', row);
+                        //проверка стоит ли элемент на своем месте или переещается
+                        if (!emptyElement.length) { //пропускает нотацию и переходит к else(ЗАСАДА)
+                            nextSquares[coll][row] = nextSquares[coll][row];
+                        }
+                        else {
+                            nextSquares[coll][emptyElement[0]] = nextSquares[coll][row];
+                            nextSquares[coll][row] = null;
+                            emptyElement.shift();
+                        }
+                    }
+                    element = undefined;
+                }
+
+            }
+        }
+        ///////////
     }
 
     let fieldSize = +props.fieldSize;//приём размеров поля через props
@@ -56,19 +91,15 @@ function Field(props) {
 
     let arrRow = [];
     let arrField = [];
-    for (let i = 0; i < fieldSize ** 2; i++) {
-        arrField[i] = <Square key={i} index={i} value={squares[i]} onSquareClick={() => handleKey(randomIndex())}></Square>
-
-
-        // for (let j = 0; j < fieldSize; j++) {
-        //     arrRow[i, j] = (<Square key={String(i) + String(j)} index={String(i) + String(j)}  ></Square >);
-        //     arrOfData[String(i) + String(j)] = null;
-        // }
-        // arrField.push(arrRow);
-        // arrRow = [];
-
+    for (let i = 0; i < fieldSize; i++) {
+        for (let j = 0; j < fieldSize; j++) {
+            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => handleKey(randomIndex(), randomIndex(), event)
+            }></Square >
+        }
+        arrField.push(arrRow);
+        arrRow = [];
     }
-
+    // console.log(arrField);
     return (
 
         <div className="field" >
@@ -79,6 +110,8 @@ function Field(props) {
     );
 
 }
+
+
 export const arrField = () => arrField;
 
 export default Field;

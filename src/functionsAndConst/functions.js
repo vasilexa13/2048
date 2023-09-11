@@ -22,5 +22,5 @@ export function randomNumForInput() {
 //Генерация index or key случайной ячейки
 export const randomIndex = () => {
     // return (String(random(0, fieldSquareSize - 1)) + String(random(0, fieldSquareSize - 1)))
-    return (String(random(0, fieldSquareSize ** 2 - 1)))
+    return ((random(0, fieldSquareSize - 1)));
 }
