@@ -20,7 +20,6 @@ function Field(props) {
     function gameOver(nextSquares) {
         let gameStatusFlag = 1;
         //   !!!УСЛОВИЕ ОКОНЧАНИЯ ИГРЫ БУДЕТ ДРУГОЕ!!!
-
         // for (let i = 0; i < fieldSize; i++) {
         //     if (nextSquares[i].includes(null) == false) {
         //         gameStatusFlag = 0;
@@ -35,7 +34,7 @@ function Field(props) {
 
         function showingFieldItem() {
             if (nextSquares[i][j] == null) {
-                nextSquares[i][j] = randomNumForInput();//(?)
+                nextSquares[i][j] = randomNumForInput();
                 setSquares(nextSquares);
             }
             else {
@@ -43,6 +42,7 @@ function Field(props) {
             }
         }
         setTimeout(showingFieldItem, 0);
+
 
         let statusGame = gameOver(nextSquares)
         props.abc(statusGame);
@@ -52,37 +52,55 @@ function Field(props) {
 
         // ДВИЖЕНИЕ КУБИКОВ   
 
-        if (event.keyCode == keysArr.right) {
-            for (let coll = 0; coll < 4; coll++) {
-                let emptyElement = [];
-                for (let row = 3; row >= 0; row--) {
-                    let element;
-                    console.log(element);
+        function moveKey() {
+            // console.log('event.keyCode', event.keyCode);
+            if (event.keyCode == keysArr.right) {
+                keyRightMove();
+                function keyRightMove() {
+                    for (let coll = 0; coll < 4; coll++) {
+                        let emptyElement = [];
+                        let filledElement = [];
+                        let comparedElement;
+                        for (let x = 3; x >= 0; x--) {
+                            let element;
+                            if (nextSquares[coll][x] == null) {
+                                emptyElement.push(x);
+                            }
+                            else {
+                                filledElement.push(x);
+                                element = [coll, x];
+                                if (filledElement.length) {
+                                    if (emptyElement.length) {
 
-                    //проветка первого пустого элемента он будет с индексом 0
-                    if (nextSquares[coll][row] == null) {
-                        emptyElement.push(row);
-                    }
+                                        if ((filledElement.length > 1) && (nextSquares[coll][x] == nextSquares[coll][filledElement[0]])) {//filledElement[0] НЕ ТАК!
+                                            console.log('nextSquares', nextSquares[coll]);
+                                            console.log('coll-', coll, 'x-', x);
 
-                    // перемещение элемента !=null
-                    if (nextSquares[coll][row] != null) {
-                        element = [coll, row];
-                        console.log('coll', coll, 'row', row);
-                        //проверка стоит ли элемент на своем месте или переещается
-                        if (!emptyElement.length) { //пропускает нотацию и переходит к else(ЗАСАДА)
-                            nextSquares[coll][row] = nextSquares[coll][row];
+                                            nextSquares[coll][filledElement[0]] = nextSquares[coll][filledElement[0]] + nextSquares[coll][filledElement[1]];//ПЕРЕСМОТРЕТЬ
+                                            nextSquares[coll][filledElement[1]] = null;
+                                        } else {
+                                            nextSquares[coll][emptyElement[0]] = nextSquares[coll][x];
+                                            nextSquares[coll][x] = null;
+                                        }
+                                        filledElement.pop();
+                                        filledElement.push(emptyElement[0]);
+
+                                        emptyElement.shift();
+                                        emptyElement.push(x);
+                                    }
+                                }
+                            }
+                            element = undefined;
                         }
-                        else {
-                            nextSquares[coll][emptyElement[0]] = nextSquares[coll][row];
-                            nextSquares[coll][row] = null;
-                            emptyElement.shift();
-                        }
+                        emptyElement = null;
+                        filledElement = null;
                     }
-                    element = undefined;
                 }
 
             }
         }
+        moveKey();
+
         ///////////
     }
 
