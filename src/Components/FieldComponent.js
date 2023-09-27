@@ -32,16 +32,16 @@ function Field(props) {
 
     function handleKey(i, j, event) {
 
-        function showingFieldItem() {
-            if (nextSquares[i][j] == null) {
-                nextSquares[i][j] = randomNumForInput();
-                setSquares(nextSquares);
-            }
-            else {
-                handleKey(randomIndex(), randomIndex(), event)//рекурсия
-            }
+        // function showingFieldItem() {
+        if (nextSquares[i][j] == null) {
+            nextSquares[i][j] = randomNumForInput();
+            setSquares(nextSquares);
         }
-        setTimeout(showingFieldItem, 0);
+        else {
+            handleKey(randomIndex(), randomIndex(), event)//рекурсия
+        }
+        // }
+        // setTimeout(showingFieldItem, 0);
 
 
         let statusGame = gameOver(nextSquares)
@@ -57,11 +57,28 @@ function Field(props) {
             if (event.keyCode == keysArr.right) {
                 keyRightMove();
                 function keyRightMove() {
-                    for (let x = 0; x < 4; x++) {
-                        for (let y = 3; x >= 0; x--) {
-
+                    for (let y = 0; y < 4; y++) {
+                        const raw = [...nextSquares[y].filter((item) => (item != null))];
+                        for (let index = raw.length; index > 0; index--) {
+                            if ((raw[index] == raw[index - 1]) && (raw.length >= 2)) {
+                                raw[index] = raw[index] * 2;
+                                raw.splice((index - 1), 1);//
+                            }
                         }
+                        while (raw.length != 4) {//формируем массив длиной 4;
+                            raw.unshift(null);
+                        }
+                        console.log(raw, 'raw');
+
+                        // console.log(nextSquares, 'nextSquares');
+
+
                     }
+
+                    console.log('----------');
+
+
+
                     //             for (let coll = 0; coll < 4; coll++) {
                     //                 let emptyElement = [];
                     //                 let filledElement = [];
@@ -101,45 +118,44 @@ function Field(props) {
                     //                 emptyElement = null;
                     //                 filledElement = null;
                     //             }
-                    //         }
-
-                    //     }
                 }
-                moveKey();
 
-                ///////////
             }
-
-            let fieldSize = +props.fieldSize;//приём размеров поля через props
-            fieldSize = 4;
-
-            let arrRow = [];
-            let arrField = [];
-            for (let i = 0; i < fieldSize; i++) {
-                for (let j = 0; j < fieldSize; j++) {
-                    arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => handleKey(randomIndex(), randomIndex(), event)
-                    }></Square >
-                }
-                arrField.push(arrRow);
-                arrRow = [];
-            }
-            // console.log(arrField);
-            return (
-
-                <div className="field" >
-                    <React.Fragment >
-                        {arrField}
-                    </React.Fragment>
-                </div>
-            );
-
         }
+        moveKey();
+
+        ///////////
+    }
+
+    let fieldSize = +props.fieldSize;//приём размеров поля через props
+    fieldSize = 4;
+
+    let arrRow = [];
+    let arrField = [];
+    for (let i = 0; i < fieldSize; i++) {
+        for (let j = 0; j < fieldSize; j++) {
+            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => handleKey(randomIndex(), randomIndex(), event)
+            }></Square >
+        }
+        arrField.push(arrRow);
+        arrRow = [];
+    }
+    // console.log(arrField);
+    return (
+
+        <div className="field" >
+            <React.Fragment >
+                {arrField}
+            </React.Fragment>
+        </div>
+    );
+
+}
 
 
-        export const arrField = () => arrField;
+export const arrField = () => arrField;
 
-        export default Field;
-
+export default Field;
 
 
 
