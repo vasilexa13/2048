@@ -17,6 +17,20 @@ function Field(props) {
     const [squares, setSquares] = useState(Array([null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]));//!передача состояния Field компоненту
     const nextSquares = squares.slice(0);
 
+    let fieldSize = +props.fieldSize;//приём размеров поля через props
+    fieldSize = 4;
+
+    let arrRow = [];
+    let arrField = [];
+    for (let i = 0; i < fieldSize; i++) {
+        for (let j = 0; j < fieldSize; j++) {
+            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => handleKey(randomIndex(), randomIndex(), event)
+            }></Square >
+        }
+        arrField.push(arrRow);
+        arrRow = [];
+    }
+
     function gameOver(nextSquares) {
         let gameStatusFlag = 1;
         //   !!!УСЛОВИЕ ОКОНЧАНИЯ ИГРЫ БУДЕТ ДРУГОЕ!!!
@@ -32,16 +46,16 @@ function Field(props) {
 
     function handleKey(i, j, event) {
 
-        // function showingFieldItem() {
-        if (nextSquares[i][j] == null) {
-            nextSquares[i][j] = randomNumForInput();
-            setSquares(nextSquares);
+        function showingFieldItem() {
+            if (nextSquares[i][j] == null) {
+                nextSquares[i][j] = randomNumForInput();
+                setSquares(nextSquares);
+            }
+            else {
+                handleKey(randomIndex(), randomIndex(), event)//рекурсия
+            }
         }
-        else {
-            handleKey(randomIndex(), randomIndex(), event)//рекурсия
-        }
-        // }
-        // setTimeout(showingFieldItem, 0);
+        setTimeout(showingFieldItem, 0);
 
 
         let statusGame = gameOver(nextSquares)
@@ -58,91 +72,48 @@ function Field(props) {
                 keyRightMove();
                 function keyRightMove() {
                     for (let y = 0; y < 4; y++) {
-                        const raw = [...nextSquares[y].filter((item) => (item != null))];
-                        for (let index = raw.length; index > 0; index--) {
-                            if ((raw[index] == raw[index - 1]) && (raw.length >= 2)) {
-                                raw[index] = raw[index] * 2;
-                                raw.splice((index - 1), 1);//
+                        let raw = [...nextSquares[y].filter((item) => (item != null))];
+                        for (let index = raw.length - 1; index >= 0; index--) {
+                            if ((raw.length >= 3) && (raw[index - 1] == raw[index - 2]) && (raw[index] == raw[index - 1] * 2)) {//[2,2,4,8]
+                                console.log('[2,2,4,8]');//выполняется после прохождения условия
+                                raw[index - 1] = raw[index - 1] * 2;
+                                raw.splice((index - 2), 1);
+                                index--;//
+                                break;
                             }
+                            else if ((raw.length >= 4) && (raw[index] == raw[index - 1]) && (raw[index - 1] == raw[index - 2])) {//[2,2,8,8]
+                                console.log('[2,2,8,8]');//выполняется после прохождения условия
+                                raw[index] = raw[index] * 2;
+                                raw[index - 1] = raw[index - 2] * 2;
+                                raw.splice((index - 2), 2);
+                                index--;
+                                break;
+                            }
+                            else if ((raw[index] == raw[index - 1]) && (raw.length >= 2)) {
+                                raw[index] = raw[index] * 2;
+                                raw.splice((index - 1), 1);
+                                index--;
+                                break;//что даёт??
+                            }
+
                         }
-                        while (raw.length != 4) {//формируем массив длиной 4;
+                        while (raw.length != 4) {
                             raw.unshift(null);
                         }
                         console.log(raw, 'raw');
-
-                        // console.log(nextSquares, 'nextSquares');
-
-
+                        nextSquares[y] = raw;
                     }
-
                     console.log('----------');
-
-
-
-                    //             for (let coll = 0; coll < 4; coll++) {
-                    //                 let emptyElement = [];
-                    //                 let filledElement = [];
-                    //                 let comparedElement;
-                    //                 for (let x = 3; x >= 0; x--) {
-                    //                     let element;
-                    //                     if (nextSquares[coll][x] == null) {
-                    //                         emptyElement.push(x);
-                    //                     }
-                    //                     else {
-                    //                         filledElement.push(x);
-                    //                         element = [coll, x];
-                    //                         if (filledElement.length) {
-                    //                             if (emptyElement.length) {
-
-                    //                                 if ((filledElement.length > 1) && (nextSquares[coll][x] == nextSquares[coll][filledElement[0]])) {//filledElement[0] НЕ ТАК!filledElement[filledElement.lenth-1]
-                    //                                     console.log('nextSquares', nextSquares[coll]);
-                    //                                     console.log('coll-', coll, 'x-', x);
-
-                    //                                     // nextSquares[coll][filledElement[0]] = nextSquares[coll][filledElement[0]] + nextSquares[coll][filledElement[1]];//ПЕРЕСМОТРЕТЬ
-                    //                                     nextSquares[coll][filledElement[0]] = nextSquares[coll][filledElement[0]] + nextSquares[coll][filledElement[1]];//ПЕРЕСМОТРЕТЬ
-                    //                                     nextSquares[coll][filledElement[1]] = null;
-                    //                                 } else {
-                    //                                     nextSquares[coll][emptyElement[0]] = nextSquares[coll][x];
-                    //                                     nextSquares[coll][x] = null;
-                    //                                 }
-                    //                                 filledElement.pop();
-                    //                                 filledElement.push(emptyElement[0]);
-
-                    //                                 emptyElement.shift();
-                    //                                 emptyElement.push(x);
-                    //                             }
-                    //                         }
-                    //                     }
-                    //                     element = undefined;
-                    //                 }
-                    //                 emptyElement = null;
-                    //                 filledElement = null;
-                    //             }
                 }
-
             }
         }
         moveKey();
-
         ///////////
     }
 
-    let fieldSize = +props.fieldSize;//приём размеров поля через props
-    fieldSize = 4;
 
-    let arrRow = [];
-    let arrField = [];
-    for (let i = 0; i < fieldSize; i++) {
-        for (let j = 0; j < fieldSize; j++) {
-            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => handleKey(randomIndex(), randomIndex(), event)
-            }></Square >
-        }
-        arrField.push(arrRow);
-        arrRow = [];
-    }
     // console.log(arrField);
     return (
-
         <div className="field" >
             <React.Fragment >
                 {arrField}
