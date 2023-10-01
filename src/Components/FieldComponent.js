@@ -90,8 +90,10 @@ function Field(props) {
                         nextSquares[y] = raw;
                     }
                     console.log('right');
+                    console.log('---');
                 }
             }
+
             if (event.keyCode == keysArr.left) {
                 keyLeftMove();
                 function keyLeftMove() {
@@ -113,7 +115,76 @@ function Field(props) {
                         nextSquares[y] = raw;
                     }
                     console.log('left');
+                    console.log('---');
                 }
+            }
+
+            if (event.keyCode == keysArr.down) {
+                keyDownMove();
+                function keyDownMove() {
+                    // console.log(nextSquares, 'nextSquares');
+                    let arr = [];
+                    let col = [];
+                    for (let x = 0; x < 4; x++) {
+                        for (let y = 0; y < 4; y++) {//переворот массива(транспонирование)
+                            arr.push(nextSquares[y][x]);
+                        }
+                        col = [...arr.filter((item) => (item != null))];
+                        arr = [];
+                        //сложение символов
+                        for (let index = col.length - 1; index >= 0; index--) {
+                            if ((col[index] === col[index - 1]) && (col.length >= 2)) {
+                                col[index] = col[index] * 2;
+                                col[index - 1] = null;
+                                col = col.filter((item) => (item != null));
+                                col.unshift(null);
+                            }
+                        }
+                        while (col.length != 4) {
+                            col.unshift(null);
+                        }
+                        for (let y = 0; y < 4; y++) {///переворот массива(транспонирование)
+                            nextSquares[y][x] = col[y];
+                        }
+                        console.log(col, 'col');
+                    }
+                }
+                console.log('down');
+                console.log('---');
+            }
+
+            if (event.keyCode == keysArr.up) {
+                keyUpMove();
+                function keyUpMove() {
+                    console.log(nextSquares, 'nextSquares');
+                    let arr = [];
+                    let col = [];
+                    for (let x = 0; x < 4; x++) {
+                        for (let y = 0; y < 4; y++) {//переворот массива(транспонирование)
+                            arr.push(nextSquares[y][x]);
+                        }
+                        col = [...arr.filter((item) => (item != null))];
+                        arr = [];
+                        //сложение символов
+                        for (let index = 0; index < col.length - 1; index++) {
+                            if ((col[index] === col[index + 1]) && (col.length >= 2)) {
+                                col[index] = col[index] * 2;
+                                col[index + 1] = null;
+                                col = col.filter((item) => (item != null));
+                                col.push(null);
+                            }
+                        }
+                        while (col.length != 4) {
+                            col.push(null);
+                        }
+                        for (let y = 0; y < 4; y++) {///переворот массива(транспонирование)
+                            nextSquares[y][x] = col[y];
+                        }
+                        console.log(col, 'col');
+                    }
+                }
+                console.log('up');
+                console.log('---');
             }
 
 
