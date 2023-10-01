@@ -74,26 +74,12 @@ function Field(props) {
                     for (let y = 0; y < 4; y++) {
                         let raw = [...nextSquares[y].filter((item) => (item != null))];
                         for (let index = raw.length - 1; index >= 0; index--) {
-                            if ((raw.length >= 3) && (raw[index - 1] == raw[index - 2]) && (raw[index] == raw[index - 1] * 2)) {//[2,2,4,8]
-                                console.log('[2,2,4,8]');//выполняется после прохождения условия
-                                raw[index - 1] = raw[index - 1] * 2;
-                                raw.splice((index - 2), 1);
-                                index--;//
-                                break;
-                            }
-                            else if ((raw.length >= 4) && (raw[index] == raw[index - 1]) && (raw[index - 1] == raw[index - 2])) {//[2,2,8,8]
-                                console.log('[2,2,8,8]');//выполняется после прохождения условия
+                            if ((raw[index] === raw[index - 1]) && (raw.length >= 2)) {
                                 raw[index] = raw[index] * 2;
-                                raw[index - 1] = raw[index - 2] * 2;
-                                raw.splice((index - 2), 2);
-                                index--;
-                                break;
-                            }
-                            else if ((raw[index] == raw[index - 1]) && (raw.length >= 2)) {
-                                raw[index] = raw[index] * 2;
-                                raw.splice((index - 1), 1);
-                                index--;
-                                break;//что даёт??
+                                // raw.splice((index - 1), 1);
+                                raw[index - 1] = null;
+                                raw = raw.filter((item) => (item != null));
+                                raw.unshift(null);
                             }
 
                         }
@@ -103,9 +89,34 @@ function Field(props) {
                         console.log(raw, 'raw');
                         nextSquares[y] = raw;
                     }
-                    console.log('----------');
+                    console.log('right');
                 }
             }
+            if (event.keyCode == keysArr.left) {
+                keyLeftMove();
+                function keyLeftMove() {
+                    for (let y = 0; y < 4; y++) {
+                        let raw = [...nextSquares[y].filter((item) => (item != null))];
+                        for (let index = 0; index < raw.length - 1; index++) {
+                            if ((raw[index] === raw[index + 1]) && (raw.length >= 2)) {
+                                raw[index] = raw[index] * 2;
+                                // raw.splice((index - 1), 1);
+                                raw[index + 1] = null;
+                                raw = raw.filter((item) => (item != null));
+                                raw.push(null);
+                            }
+                        }
+                        while (raw.length != 4) {
+                            raw.push(null);
+                        }
+                        console.log(raw, 'raw');
+                        nextSquares[y] = raw;
+                    }
+                    console.log('left');
+                }
+            }
+
+
         }
         moveKey();
         ///////////
