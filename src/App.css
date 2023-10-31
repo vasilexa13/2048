@@ -38,21 +38,11 @@
   height: 100px;
 }
 
-.field {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  display: inline-grid;
-  grid-template-columns: repeat(4, 25%);
-
-
-}
-
 .square__component {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 48px;
+  font-size: 62px;
   color: #4b4b4b;
 }
 
@@ -60,4 +50,18 @@
   background: rgba(0, 0, 0, .55);
   z-index: 100;
   overflow: hidden;
+}
+
+.scale-up-center {
+  animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }

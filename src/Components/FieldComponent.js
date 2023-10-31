@@ -2,212 +2,136 @@
 import React from "react";
 import Square from "./SquareComponent";
 import Header from "../Header/Header";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { handleKeyDown } from "../App";
 import { gamestatus, keysArr } from "../functionsAndConst/const";
 import { seachElement } from "../App";
-import { randomNumForInput, randomIndex } from "../functionsAndConst/functions";
+import { randomNumForInput, randomIndex, newArrNull } from "../functionsAndConst/functions";
+import _, { random, throttle, cloneDeep } from "lodash"
+import { wait } from "@testing-library/user-event/dist/utils";
+import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from '../functionsAndConst/functions'
+import { fieldSquareSize } from '../functionsAndConst/const'
+import { useSearchParams } from "react-router-dom";
+import NewGame from '../Components/NewGame/NewGame'
+import { useSelector } from "react-redux";
 
-
+export let score = 0;
 const arrOfData = {};
 
-function Field(props) {
+export const resetBtn = function () {
+    console.log('New game pushed');
+    // makeZeroField();
+}
 
-    // const [squares, setSquares] = useState(Array(4).fill(Array(4).fill(null)));//!передача состояния Field компоненту ТАКОЕ ЗАПОЛНЕНИЕ НЕ РАБОТАЕТ
-    const [squares, setSquares] = useState(Array([null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]));//!передача состояния Field компоненту
-    const nextSquares = squares.slice(0);
+function Field(props, resetBtn) {
 
-    let fieldSize = +props.fieldSize;//приём размеров поля через props
-    fieldSize = 4;
+    //REDUX
+    let fieldSquareSize = useSelector(state => state.sizeReduser);
+    const [squares, setSquares] = useState(newArrNull(fieldSquareSize));
+
+    let [score, setScore] = useState(0);
 
     let arrRow = [];
     let arrField = [];
-    for (let i = 0; i < fieldSize; i++) {
-        for (let j = 0; j < fieldSize; j++) {
-            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => handleKey(randomIndex(), randomIndex(), event)
+    for (let i = 0; i < fieldSquareSize; i++) {
+        for (let j = 0; j < fieldSquareSize; j++) {
+            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => ((handleKey(event)))
             }></Square >
         }
-        arrField.push(arrRow);
+        arrField.push(arrRow)
         arrRow = [];
     }
 
-    function gameOver(nextSquares) {
-        let gameStatusFlag = 1;
-        //   !!!УСЛОВИЕ ОКОНЧАНИЯ ИГРЫ БУДЕТ ДРУГОЕ!!!
-        // for (let i = 0; i < fieldSize; i++) {
-        //     if (nextSquares[i].includes(null) == false) {
-        //         gameStatusFlag = 0;
-        //     }
-
-        // }
-
+    let gameStatusFlag = 1;
+    function gameOver() {
         return (gamestatus[gameStatusFlag]);
     }
 
-    function handleKey(i, j, event) {
+    let moveKey = function (event, nextArr) {
+        if (event.keyCode === keysArr.ArrowRight) {
+            return keyRightMove(nextArr, fieldSquareSize);
+        }
+        else if (event.keyCode === keysArr.ArrowLeft) {
+            return keyLeftMove(nextArr, fieldSquareSize);
+        }
+        else if (event.keyCode === keysArr.ArrowDown) {
+            return keyDownMove(nextArr, fieldSquareSize);
+        }
+        else if (event.keyCode === keysArr.ArrowUp) {
+            return keyUpMove(nextArr, fieldSquareSize);
+        }
+    };
 
-        function showingFieldItem() {
-            if (nextSquares[i][j] == null) {
-                nextSquares[i][j] = randomNumForInput();
-                setSquares(nextSquares);
-            }
-            else {
-                handleKey(randomIndex(), randomIndex(), event)//рекурсия
+    let throttleMoveKey = _.throttle(moveKey, 200);
+
+    function addElement(nextSquares, event) {
+        let arr = Array.from(createArrFreeCell(nextSquares));
+        let randomElem = random(0, arr.length - 1);
+        if (event.key in keysArr) {
+            if (arr.length > 0) {
+                nextSquares[arr[randomElem]['i']][arr[randomElem]['j']] = randomNumForInput();
             }
         }
-        setTimeout(showingFieldItem, 0);
-
-
-        let statusGame = gameOver(nextSquares)
-        props.abc(statusGame);
-
-
-
-
-        // ДВИЖЕНИЕ КУБИКОВ   
-
-        function moveKey() {
-            // console.log('event.keyCode', event.keyCode);
-            if (event.keyCode == keysArr.right) {
-                keyRightMove();
-                function keyRightMove() {
-                    for (let y = 0; y < 4; y++) {
-                        let raw = [...nextSquares[y].filter((item) => (item != null))];
-                        for (let index = raw.length - 1; index >= 0; index--) {
-                            if ((raw[index] === raw[index - 1]) && (raw.length >= 2)) {
-                                raw[index] = raw[index] * 2;
-                                // raw.splice((index - 1), 1);
-                                raw[index - 1] = null;
-                                raw = raw.filter((item) => (item != null));
-                                raw.unshift(null);
-                            }
-
-                        }
-                        while (raw.length != 4) {
-                            raw.unshift(null);
-                        }
-                        console.log(raw, 'raw');
-                        nextSquares[y] = raw;
-                    }
-                    console.log('right');
-                    console.log('---');
-                }
-            }
-
-            if (event.keyCode == keysArr.left) {
-                keyLeftMove();
-                function keyLeftMove() {
-                    for (let y = 0; y < 4; y++) {
-                        let raw = [...nextSquares[y].filter((item) => (item != null))];
-                        for (let index = 0; index < raw.length - 1; index++) {
-                            if ((raw[index] === raw[index + 1]) && (raw.length >= 2)) {
-                                raw[index] = raw[index] * 2;
-                                // raw.splice((index - 1), 1);
-                                raw[index + 1] = null;
-                                raw = raw.filter((item) => (item != null));
-                                raw.push(null);
-                            }
-                        }
-                        while (raw.length != 4) {
-                            raw.push(null);
-                        }
-                        console.log(raw, 'raw');
-                        nextSquares[y] = raw;
-                    }
-                    console.log('left');
-                    console.log('---');
-                }
-            }
-
-            if (event.keyCode == keysArr.down) {
-                keyDownMove();
-                function keyDownMove() {
-                    // console.log(nextSquares, 'nextSquares');
-                    let arr = [];
-                    let col = [];
-                    for (let x = 0; x < 4; x++) {
-                        for (let y = 0; y < 4; y++) {//переворот массива(транспонирование)
-                            arr.push(nextSquares[y][x]);
-                        }
-                        col = [...arr.filter((item) => (item != null))];
-                        arr = [];
-                        //сложение символов
-                        for (let index = col.length - 1; index >= 0; index--) {
-                            if ((col[index] === col[index - 1]) && (col.length >= 2)) {
-                                col[index] = col[index] * 2;
-                                col[index - 1] = null;
-                                col = col.filter((item) => (item != null));
-                                col.unshift(null);
-                            }
-                        }
-                        while (col.length != 4) {
-                            col.unshift(null);
-                        }
-                        for (let y = 0; y < 4; y++) {///переворот массива(транспонирование)
-                            nextSquares[y][x] = col[y];
-                        }
-                        console.log(col, 'col');
-                    }
-                }
-                console.log('down');
-                console.log('---');
-            }
-
-            if (event.keyCode == keysArr.up) {
-                keyUpMove();
-                function keyUpMove() {
-                    console.log(nextSquares, 'nextSquares');
-                    let arr = [];
-                    let col = [];
-                    for (let x = 0; x < 4; x++) {
-                        for (let y = 0; y < 4; y++) {//переворот массива(транспонирование)
-                            arr.push(nextSquares[y][x]);
-                        }
-                        col = [...arr.filter((item) => (item != null))];
-                        arr = [];
-                        //сложение символов
-                        for (let index = 0; index < col.length - 1; index++) {
-                            if ((col[index] === col[index + 1]) && (col.length >= 2)) {
-                                col[index] = col[index] * 2;
-                                col[index + 1] = null;
-                                col = col.filter((item) => (item != null));
-                                col.push(null);
-                            }
-                        }
-                        while (col.length != 4) {
-                            col.push(null);
-                        }
-                        for (let y = 0; y < 4; y++) {///переворот массива(транспонирование)
-                            nextSquares[y][x] = col[y];
-                        }
-                        console.log(col, 'col');
-                    }
-                }
-                console.log('up');
-                console.log('---');
-            }
-
-
-        }
-        moveKey();
-        ///////////
+        return nextSquares;
     }
 
+    let createArrFreeCell = (nextFree) => {
+        let freeCellArr = [];
+        let emptyArrayCell = {};
+        for (let i = 0; i < nextFree.length; i++) {
+            for (let j = 0; j < nextFree[i].length; j++) {
+                if (nextFree[i][j] == null) {
+                    emptyArrayCell['i'] = i;
+                    emptyArrayCell['j'] = j;
+                    freeCellArr.push(emptyArrayCell);
+                    emptyArrayCell = {};
+                }
+            }
+        }
+        return (freeCellArr);
+    };
 
-    // console.log(arrField);
-    return (
-        <div className="field" >
+    let handleKey = (event) => {
+        const nextSquares = _.cloneDeep(squares);
+        let statusGame = gameOver(nextSquares);
+        props.abc(statusGame);
+
+        let next = throttleMoveKey(event, nextSquares);
+        // let next = moveKey(event, nextSquares);
+        next = addElement(nextSquares, event);
+        setSquares(next);
+    }
+
+    let makeZeroField = (nextSquares, resetBtn) => {//НЕ працуе
+        console.log('nextSquaresMakesZERO');
+        console.log('nextSquares', nextSquares);
+        resetBtn();
+        return nextSquares;
+    }
+
+    const cssFieldStyle = {
+        position: 'absolute',
+        left: '50%',
+        transform: 'translate(-50%, 0)',
+        display: 'inline-grid',
+        gridTemplateColumns: `repeat(${fieldSquareSize}, ${1 / fieldSquareSize * 100}%)`,
+    }
+    return (<div>
+        <div className="field " style={cssFieldStyle}>
             <React.Fragment >
                 {arrField}
+
             </React.Fragment>
+
         </div>
+        <div className='footer'>
+            <h2 className='score'>SCORE:{score}</h2>
+            <NewGame></NewGame>
+        </div>
+    </div>
     );
-
 }
-
-
 export const arrField = () => arrField;
-
 export default Field;
 
 
