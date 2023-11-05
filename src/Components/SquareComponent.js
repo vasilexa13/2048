@@ -11,8 +11,8 @@ function Square({ value, onSquareClick }) {
     const myRef = useRef(null);
 
     return (
-        <div className="square__component scale-up-center" tabIndex={-1} autoFocus={true}
-            ref={myRef}
+        <div className="square__component scale-up-center" tabIndex={-1}
+            // ref={myRef}
             onKeyDown={onSquareClick}>{value}
         </div>
     );

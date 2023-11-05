@@ -1,5 +1,6 @@
 import { fieldSquareSize } from "./const";
 import { useSelector } from "react-redux";
+import { score } from '../Components/FieldComponent'
 
 // Функция ВКЛЮЧАЕТ последний элемент
 export function random(min, max) {
@@ -30,13 +31,14 @@ export let newArrNull = function (fieldSquareSize) {
 }
 
 // ДВИЖЕНИЕ КУБИКОВ   
-export let keyRightMove = (nextR, fieldSquareSize) => {
+export let keyRightMove = (nextR, fieldSquareSize, scoreReducer) => {
     for (let y = 0; y < fieldSquareSize; y++) {
         let raw = [...nextR[y].filter((item) => (item != null))];
         for (let index = raw.length - 1; index >= 0; index--) {
             if ((raw[index] === raw[index - 1]) && (raw.length >= 2)) {
                 raw[index] = raw[index] * 2;
-                // score += raw[index];
+                scoreReducer += raw[index];
+                console.log(scoreReducer, 'scoreReducerR')
                 raw[index - 1] = null;
                 raw = raw.filter((item) => (item != null));
                 raw.unshift(null);
@@ -50,13 +52,13 @@ export let keyRightMove = (nextR, fieldSquareSize) => {
     return nextR;
 }
 
-export let keyLeftMove = (nextL, fieldSquareSize) => {
+export let keyLeftMove = (nextL, fieldSquareSize, scoreReducer) => {
     for (let y = 0; y < fieldSquareSize; y++) {
         let raw = [...nextL[y].filter((item) => (item != null))];
         for (let index = 0; index < raw.length - 1; index++) {
             if ((raw[index] === raw[index + 1]) && (raw.length >= 2)) {
                 raw[index] = raw[index] * 2;
-                // score += raw[index];
+                scoreReducer += raw[index];
                 raw[index + 1] = null;
                 raw = raw.filter((item) => (item != null));
                 raw.push(null);
@@ -70,11 +72,11 @@ export let keyLeftMove = (nextL, fieldSquareSize) => {
     return nextL;
 }
 
-export let keyDownMove = (nextD, fieldSquareSize) => {
+export let keyDownMove = (nextD, fieldSquareSize, scoreReducer) => {
     let arr = [];
     let col = [];
     for (let x = 0; x < fieldSquareSize; x++) {
-        for (let y = 0; y < fieldSquareSize; y++) {//переворот массива(транспонирование)
+        for (let y = 0; y < fieldSquareSize; y++) {
             arr.push(nextD[y][x]);
         }
         col = [...arr.filter((item) => (item != null))];
@@ -83,7 +85,7 @@ export let keyDownMove = (nextD, fieldSquareSize) => {
         for (let index = col.length - 1; index >= 0; index--) {
             if ((col[index] === col[index - 1]) && (col.length >= 2)) {
                 col[index] = col[index] * 2;
-                // score += col[index];
+                scoreReducer += col[index];
                 col[index - 1] = null;
                 col = col.filter((item) => (item != null));
                 col.unshift(null);
@@ -99,7 +101,7 @@ export let keyDownMove = (nextD, fieldSquareSize) => {
     return nextD;
 }
 
-export let keyUpMove = (nextU, fieldSquareSize) => {
+export let keyUpMove = (nextU, fieldSquareSize, scoreReducer) => {
     let arr = [];
     let col = [];
     for (let x = 0; x < fieldSquareSize; x++) {
@@ -112,7 +114,7 @@ export let keyUpMove = (nextU, fieldSquareSize) => {
         for (let index = 0; index < col.length - 1; index++) {
             if ((col[index] === col[index + 1]) && (col.length >= 2)) {
                 col[index] = col[index] * 2;
-                // score += col[index];
+                scoreReducer += col[index];
                 col[index + 1] = null;
                 col = col.filter((item) => (item != null));
                 col.push(null);

@@ -1,36 +1,22 @@
-
 import React from "react";
 import Square from "./SquareComponent";
-import Header from "../Header/Header";
 import { useState, useRef, useEffect } from "react";
-import { handleKeyDown } from "../App";
 import { gamestatus, keysArr } from "../functionsAndConst/const";
-import { seachElement } from "../App";
 import { randomNumForInput, randomIndex, newArrNull } from "../functionsAndConst/functions";
 import _, { random, throttle, cloneDeep } from "lodash"
-import { wait } from "@testing-library/user-event/dist/utils";
 import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from '../functionsAndConst/functions'
-import { fieldSquareSize } from '../functionsAndConst/const'
-import { useSearchParams } from "react-router-dom";
 import NewGame from '../Components/NewGame/NewGame'
 import { useSelector } from "react-redux";
+import Score from '../Components/Score';
 
-export let score = 0;
 const arrOfData = {};
 
-export const resetBtn = function () {
-    console.log('New game pushed');
-    // makeZeroField();
-}
-
-function Field(props, resetBtn) {
+function Field(props) {
 
     //REDUX
-    let fieldSquareSize = useSelector(state => state.sizeReduser);
+    let fieldSquareSize = useSelector(state => state.size.sizeReduser);
+
     const [squares, setSquares] = useState(newArrNull(fieldSquareSize));
-
-    let [score, setScore] = useState(0);
-
     let arrRow = [];
     let arrField = [];
     for (let i = 0; i < fieldSquareSize; i++) {
@@ -102,11 +88,11 @@ function Field(props, resetBtn) {
         setSquares(next);
     }
 
-    let makeZeroField = (nextSquares, resetBtn) => {//НЕ працуе
-        console.log('nextSquaresMakesZERO');
-        console.log('nextSquares', nextSquares);
-        resetBtn();
-        return nextSquares;
+
+    let resetBtn = () => {
+        console.log('New game pushed');
+        let zeroArr = setSquares(newArrNull());
+        return zeroArr;
     }
 
     const cssFieldStyle = {
@@ -125,8 +111,9 @@ function Field(props, resetBtn) {
 
         </div>
         <div className='footer'>
-            <h2 className='score'>SCORE:{score}</h2>
-            <NewGame></NewGame>
+            <Score></Score>
+            <NewGame res21Btn={resetBtn} asdas='asdasd'></NewGame>
+            {/* <NewGame res21Btn={() => resetBtn}></NewGame> */}
         </div>
     </div>
     );
