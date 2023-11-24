@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useSelector } from "react-redux";
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 
-function Score() {
-    // let [score2, setScore] = useState(2);
+function Score({ scoreCounter }) {
 
     //Redux
-    const dispatch = useDispatch();
-    const scoreReducer = useSelector(state => state.score.scoreReducer);
-    dispatch({ type: 'count_score', payload: scoreReducer });//NO
-
+    // const dispatch = useDispatch();
+    // let score = useSelector(state => state.score.score);
+    // const addScore = () => {
+    //     dispatch({ type: 'count_score', payload: 10 })// записывать значение в payload
+    //     //     console.log(countScore(), 'countScore()')
+    // }
 
     return (
         <div>
             <h2 className='score'
-            >SCORE:{scoreReducer}</h2>
-            {/* <h2 className='score'>SCORE:{score}</h2> */}
+            >SCORE:
+                {scoreCounter()}
+                {/* {score} */}
+            </h2>
         </div>
     );
 }

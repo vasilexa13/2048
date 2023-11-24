@@ -7,6 +7,15 @@
   pointer-events: none;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
+.main {
+  color: #4b4b4b;
+  font-size: 24px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -64,4 +73,30 @@
   100% {
     transform: scale(1);
   }
+}
+
+.frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: #4b4b4b 1px solid;
+  margin: 10px;
+  color: #4b4b4b;
+}
+
+.login {
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3em;
+}
+
+.best_score {
+  padding: 20px;
+  position: absolute;
+  bottom: 0px;
+  right: 50px;
+  font-size: 2em;
 }

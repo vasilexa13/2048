@@ -3,17 +3,19 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { store } from './Components/store'
+import { store } from './Components/store';
+// module.exports = require('./lodash');
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
-    <React.StrictMode  >
-      <BrowserRouter>
+  <React.StrictMode  >
+    < BrowserRouter >
+      < Provider store={store} >
         <App />
-      </BrowserRouter>
-    </React.StrictMode >
-  </Provider>
+      </Provider >
+    </BrowserRouter >
+  </React.StrictMode >
 
 );
 

@@ -1,6 +1,7 @@
-import { fieldSquareSize } from "./const";
-import { useSelector } from "react-redux";
+// import { fieldSquareSize } from "./const";
+import { useSelector, useDispatch } from "react-redux";
 import { score } from '../Components/FieldComponent'
+import { a1 } from '../Components/Score';
 
 // Функция ВКЛЮЧАЕТ последний элемент
 export function random(min, max) {
@@ -21,24 +22,37 @@ export function randomNumForInput() {
 
 //создание пустого массива для поля заданного размера fieldSquareSize
 export let newArrNull = function (fieldSquareSize) {
-    // let fieldSquareSize = useSelector(state => state.sizeReduser)//
-    let arr = (new Array(fieldSquareSize)).fill(null);
-    let arr2 = (new Array(fieldSquareSize));
+    let arr = [];
+    let arr2 = []
     for (let i = 0; i < fieldSquareSize; i++) {
-        arr2[i] = arr;
+        for (let j = 0; j < fieldSquareSize; j++) {
+            arr[j] = null;
+        }
+        arr2.push(arr);
+        arr = [];
     }
-    return arr2;
+    return arr2
 }
 
-// ДВИЖЕНИЕ КУБИКОВ   
-export let keyRightMove = (nextR, fieldSquareSize, scoreReducer) => {
+//SCORE
+// let countScore = (num = 10) => {
+//     // if (typeof (num) != 'undefined') {
+//     //     console.log('функция countScore получила аргумент num= ', num);
+//     return num;
+//     // }
+// };
+
+// ДВИЖЕНИЕ КУБИКОВ
+export let keyRightMove = (nextR, fieldSquareSize, countScore) => {
     for (let y = 0; y < fieldSquareSize; y++) {
         let raw = [...nextR[y].filter((item) => (item != null))];
         for (let index = raw.length - 1; index >= 0; index--) {
             if ((raw[index] === raw[index - 1]) && (raw.length >= 2)) {
                 raw[index] = raw[index] * 2;
-                scoreReducer += raw[index];
-                console.log(scoreReducer, 'scoreReducerR')
+                // score += raw[index];
+                countScore(raw[index]);
+                console.log('countScore(raw[index])', countScore(raw[index]))
+                console.log(raw[index], 'raw[index]')
                 raw[index - 1] = null;
                 raw = raw.filter((item) => (item != null));
                 raw.unshift(null);

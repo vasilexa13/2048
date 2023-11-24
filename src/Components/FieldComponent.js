@@ -3,11 +3,12 @@ import Square from "./SquareComponent";
 import { useState, useRef, useEffect } from "react";
 import { gamestatus, keysArr } from "../functionsAndConst/const";
 import { randomNumForInput, randomIndex, newArrNull } from "../functionsAndConst/functions";
-import _, { random, throttle, cloneDeep } from "lodash"
-import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from '../functionsAndConst/functions'
+import _, { random, cloneDeep, isEqual } from "lodash"
 import NewGame from '../Components/NewGame/NewGame'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Score from '../Components/Score';
+import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from "../functionsAndConst/functions";
+import Footer from "../Footer/Footer";
 
 const arrOfData = {};
 
@@ -16,7 +17,10 @@ function Field(props) {
     //REDUX
     let fieldSquareSize = useSelector(state => state.size.sizeReduser);
 
-    const [squares, setSquares] = useState(newArrNull(fieldSquareSize));
+    let [squares, setSquares] = useState(newArrNull(fieldSquareSize));
+    let [count, setCount] = useState(0);
+    // console.log(count, 'count')
+
     let arrRow = [];
     let arrField = [];
     for (let i = 0; i < fieldSquareSize; i++) {
@@ -33,18 +37,33 @@ function Field(props) {
         return (gamestatus[gameStatusFlag]);
     }
 
+
+    let countScore = (num) => {
+        if (typeof (num) != 'undefined') {
+            count += num;
+
+            if (count >= +localStorage.getItem('bestScore')) {
+                localStorage.setItem('bestScore', count)
+            }
+            return setCount(count);
+        }
+
+    };
+
+
+
     let moveKey = function (event, nextArr) {
         if (event.keyCode === keysArr.ArrowRight) {
-            return keyRightMove(nextArr, fieldSquareSize);
+            return keyRightMove(nextArr, fieldSquareSize, countScore);
         }
         else if (event.keyCode === keysArr.ArrowLeft) {
-            return keyLeftMove(nextArr, fieldSquareSize);
+            return keyLeftMove(nextArr, fieldSquareSize, countScore);
         }
         else if (event.keyCode === keysArr.ArrowDown) {
-            return keyDownMove(nextArr, fieldSquareSize);
+            return keyDownMove(nextArr, fieldSquareSize, countScore);
         }
         else if (event.keyCode === keysArr.ArrowUp) {
-            return keyUpMove(nextArr, fieldSquareSize);
+            return keyUpMove(nextArr, fieldSquareSize, countScore);
         }
     };
 
@@ -77,22 +96,56 @@ function Field(props) {
         return (freeCellArr);
     };
 
+    let isMove = (arrBefore, arrAfter) => {
+        if (_.isEqual(arrBefore, arrAfter)) {
+            console.log('массивы равны', _.isEqual(arrBefore, arrAfter))
+        }
+    }
+
+    let isHorizontalMove = (arr) => {
+        for (let index = arr.length - 1; index >= 0; index--) {
+            if ((arr[index] === arr[index - 1]) && (arr.length >= 2)) {
+            }
+        }
+    }
+
+    //прописать функцию через throttle
     let handleKey = (event) => {
         const nextSquares = _.cloneDeep(squares);
-        let statusGame = gameOver(nextSquares);
-        props.abc(statusGame);
-
+        // let statusGame = gameOver(nextSquares);
+        // props.abc(statusGame);
         let next = throttleMoveKey(event, nextSquares);
-        // let next = moveKey(event, nextSquares);
         next = addElement(nextSquares, event);
-        setSquares(next);
+
+
+        //!проверка
+
+        // console.log(nextSquares, 'nextSquares');
+        // console.log(squares, 'squares');
+        // console.log(_.isEqual(nextSquares, squares));
+
+        if (isMove(nextSquares, squares)) {
+            if (isHorizontalMove(nextSquares)) {
+                console.log('есть горизонтальное движение')
+            }
+            else {
+                console.log('горизонтального движения НЕТ')
+            }
+            //проверка на вертикальное перемещение
+        }
+        else {
+            setSquares(next);
+
+        }
+        // !
+        // setSquares(next);//ВЕРНУТЬ КАК БЫЛО
     }
 
 
     let resetBtn = () => {
-        console.log('New game pushed');
-        let zeroArr = setSquares(newArrNull());
-        return zeroArr;
+        squares = _.cloneDeep(newArrNull(fieldSquareSize));
+        setCount(0);
+        return setSquares(squares);
     }
 
     const cssFieldStyle = {
@@ -100,33 +153,22 @@ function Field(props) {
         left: '50%',
         transform: 'translate(-50%, 0)',
         display: 'inline-grid',
-        gridTemplateColumns: `repeat(${fieldSquareSize}, ${1 / fieldSquareSize * 100}%)`,
+        gridTemplateColumns: `repeat(${fieldSquareSize}, ${1 / fieldSquareSize * 100}%)`
     }
     return (<div>
         <div className="field " style={cssFieldStyle}>
             <React.Fragment >
                 {arrField}
-
             </React.Fragment>
-
         </div>
         <div className='footer'>
-            <Score></Score>
-            <NewGame res21Btn={resetBtn} asdas='asdasd'></NewGame>
-            {/* <NewGame res21Btn={() => resetBtn}></NewGame> */}
+            <Score scoreCounter={() => count}></Score>
+            <NewGame resBtn={resetBtn} ></NewGame>
         </div>
+        <Footer></Footer>
+
     </div>
     );
 }
 export const arrField = () => arrField;
 export default Field;
-
-
-
-
-
-
-
-
-
-

@@ -4,7 +4,7 @@ import { scoreReducer } from "./scoreReduxer";
 
 const rootReducer = combineReducers({
     size: sizeReducers,
-    score: scoreReducer,
+    // score: scoreReducer,
 })
 
 export let store = configureStore({
