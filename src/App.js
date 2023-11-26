@@ -62,16 +62,25 @@ const App = (props, onSquareClick) => {
       <Link to='/login' className='main cursor'>LoginPage</Link>
       <Link to='/rules' className='main cursor'>Rules</Link>
       <Link to='/game' className='main cursor'>GamePage</Link>
+
       <Header data={header}></Header>
       <Routes >
-        <Route path="/game" element={<Field id='Field' abc={setHeader} sizeField={size}></Field>} />
-        <Route path="/rules" element={<GameRulesPage></GameRulesPage>} />
+        {/* <Route path='/' element={
+          <LoginPage
+            userInput={getloginData('userName')}
+            passInput={getloginData('password')}
+          >
+          </LoginPage>}> */}
         <Route path="/login" element={
           <LoginPage
             userInput={getloginData('userName')}
             passInput={getloginData('password')}>
           </LoginPage>} />
+        <Route path="/game" element={<Field id='Field' abc={setHeader} sizeField={size}></Field>} />
+        <Route path="/rules" element={<GameRulesPage />} />
+
         <Route path="*" element={<NotFoundPage></NotFoundPage>} />
+        {/* </Route> */}
       </Routes >
 
     </>
