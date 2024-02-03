@@ -100,3 +100,20 @@
   right: 50px;
   font-size: 2em;
 }
+
+.registration_link {
+  display: block;
+  color: #4b4b4b;
+  text-decoration: underline;
+  padding: 25px;
+  font-size: 21px;
+}
+
+.registration_link:hover {
+  cursor: pointer;
+  color: chocolate;
+}
+
+.disabled-link {
+  color: #999
+}

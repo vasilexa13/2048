@@ -12,7 +12,6 @@ function Square({ value, onSquareClick }) {
 
     return (
         <div className="square__component scale-up-center" tabIndex={-1}
-            // ref={myRef}
             onKeyDown={onSquareClick}>{value}
         </div>
     );

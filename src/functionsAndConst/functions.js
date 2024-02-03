@@ -34,14 +34,6 @@ export let newArrNull = function (fieldSquareSize) {
     return arr2
 }
 
-//SCORE
-// let countScore = (num = 10) => {
-//     // if (typeof (num) != 'undefined') {
-//     //     console.log('функция countScore получила аргумент num= ', num);
-//     return num;
-//     // }
-// };
-
 // ДВИЖЕНИЕ КУБИКОВ
 export let keyRightMove = (nextR, fieldSquareSize, countScore) => {
     for (let y = 0; y < fieldSquareSize; y++) {
@@ -51,8 +43,6 @@ export let keyRightMove = (nextR, fieldSquareSize, countScore) => {
                 raw[index] = raw[index] * 2;
                 // score += raw[index];
                 countScore(raw[index]);
-                console.log('countScore(raw[index])', countScore(raw[index]))
-                console.log(raw[index], 'raw[index]')
                 raw[index - 1] = null;
                 raw = raw.filter((item) => (item != null));
                 raw.unshift(null);
