@@ -1,0 +1,1 @@
+module.exports.config = ["2048base", "root", "123qwe"];
