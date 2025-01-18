@@ -1,4 +1,4 @@
-export const gamestatus = ['Game Over', '2048'];
+export const gamestatusEnd = ['Game Over', '2048'];
 export const classNameGameOver = 'hide';
 export const keysArr = {
     'ArrowLeft': 37,

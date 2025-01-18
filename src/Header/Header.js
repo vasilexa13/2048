@@ -1,4 +1,4 @@
-import { gamestatus } from "../App";
+import { gamestatusEnd } from "../App";
 
 function Header(props) {
     return (<h1 className="scale-up-center">{props.data}</h1>)

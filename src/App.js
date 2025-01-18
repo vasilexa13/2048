@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Field from './Components/FieldComponent';
 import Header from './Header/Header';
 import React from "react";
-import { gamestatus } from './functionsAndConst/const';
+import { gamestatusEnd } from './functionsAndConst/const';
 import NotFoundPage from './Components/NotFoundPage';
 import GameRulesPage from './Components/GameRulesPage';
 import {sizeUrl } from './functionsAndConst/const';
@@ -17,7 +17,7 @@ import NewComp from './Components/NewComp';
 
 const App = (props, onSquareClick) => {
 
-  const [header, setHeader] = useState(gamestatus[1]);
+  const [header, setHeader] = useState(gamestatusEnd[1]);
 
   let [searchParams] = useSearchParams();
   const size = +searchParams.get('size');

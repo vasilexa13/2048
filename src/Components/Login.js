@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage(props) {
-    const [dataFromNode, setdataFromNode] = useState('Login Page');
+    const [dataFromNode, metadataFromNode] = useState('Login Page');
     const [userName, setUsername] = useState('');
     const [pass, setPass] = useState('');
     const [mail, setMail] = useState('');
@@ -10,7 +10,7 @@ function LoginPage(props) {
 
     async function clickHandler() {
         try {
-            const accessToken = await localStorage.getItem("accessToken");
+            const accessToken = localStorage.getItem("accessToken");
             const response = await fetch('http://localhost:3500/login', {
                 method: 'POST',
                 body: JSON.stringify({ userName, mail, pass }),
@@ -22,21 +22,21 @@ function LoginPage(props) {
 
             if (response.status === 200) {
                 const data = await response.json();
-                let token = await localStorage.setItem("accessToken", data.token.accessToken);
+                // let token = await localStorage.setItem("accessToken", data.token.accessToken);
                 // headers.Authorization = `Bearer ${data.token.accessToken}`
 
                 // здесь проверка  валидности токена
                 // если токен валидный редирест на game
                 // иначе удаление из локал storage и кудиресе на login
-                setdataFromNode(data.message);
+                metadataFromNode(data.message);
                 navigate('/game');
             } else {
                 const errorData = await response.json();
-                setdataFromNode(errorData.message);
+                metadataFromNode(errorData.message);
             }
         } catch (error) {
             console.error('Error:', error);
-            setdataFromNode('Введите верные данные или зарегестрируйтесь');
+            metadataFromNode('Введите верные данные или зарегестрируйтесь');
         }
     }
 

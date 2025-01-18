@@ -1,7 +1,7 @@
 import React from "react";
 import Square from "./SquareComponent";
 import { useState } from "react";
-import { gamestatus, keysArr } from "../functionsAndConst/const";
+import { gamestatusEnd, keysArr } from "../functionsAndConst/const";
 import { randomNumForInput, newArrNull } from "../functionsAndConst/functions";
 import _, { random } from "lodash"
 import NewGame from '../Components/NewGame/NewGame'
@@ -50,7 +50,7 @@ function Field(props) {
 
     let gameStatusFlag = 1;
     function gameOver() {
-        return (gamestatus[gameStatusFlag]);
+        return (gamestatusEnd[gameStatusFlag]);
     }
 
     let countScore = (num) => {
