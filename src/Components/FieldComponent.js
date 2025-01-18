@@ -1,168 +1,179 @@
-
 import React from "react";
 import Square from "./SquareComponent";
-import Header from "../Header/Header";
 import { useState } from "react";
-import { handleKeyDown } from "../App";
-import { gamestatus, keysArr } from "../functionsAndConst/const";
-import { seachElement } from "../App";
-import { randomNumForInput, randomIndex } from "../functionsAndConst/functions";
-
-
-const arrOfData = {};
+import { gamestatusEnd, keysArr } from "../functionsAndConst/const";
+import { randomNumForInput, newArrNull } from "../functionsAndConst/functions";
+import _, { random } from "lodash"
+import NewGame from '../Components/NewGame/NewGame'
+import { useSelector } from "react-redux";
+import Score from '../Components/Score';
+import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from "../functionsAndConst/functions";
+import Footer from "../Footer/Footer";
+import "./fieldComponent.css"
 
 function Field(props) {
+    // fetch с запросом к ендпоинту разрешения
+    (async function clickHandler() {
+        const accessToken = await localStorage.getItem("accessToken");
+        try {
+            await fetch('http://localhost:3500/game', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${accessToken}`
+                },
+            });
+        }
 
-    // const [squares, setSquares] = useState(Array(4).fill(Array(4).fill(null)));//!передача состояния Field компоненту ТАКОЕ ЗАПОЛНЕНИЕ НЕ РАБОТАЕТ
-    const [squares, setSquares] = useState(Array([null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]));//!передача состояния Field компоненту
-    const nextSquares = squares.slice(0);
-
-    function gameOver(nextSquares) {
-        let gameStatusFlag = 1;
-        //   !!!УСЛОВИЕ ОКОНЧАНИЯ ИГРЫ БУДЕТ ДРУГОЕ!!!
-        // for (let i = 0; i < fieldSize; i++) {
-        //     if (nextSquares[i].includes(null) == false) {
-        //         gameStatusFlag = 0;
-        //     }
-
-        // }
-
-        return (gamestatus[gameStatusFlag]);
+        catch (error) {
+            console.error('Error:', error);
+        }
     }
+    )()
 
-    function handleKey(i, j, event) {
+    //REDUX
+    let fieldSquareSize = useSelector(state => state.size.sizeReduser);
 
-        // function showingFieldItem() {
-        if (nextSquares[i][j] == null) {
-            nextSquares[i][j] = randomNumForInput();
-            setSquares(nextSquares);
-        }
-        else {
-            handleKey(randomIndex(), randomIndex(), event)//рекурсия
-        }
-        // }
-        // setTimeout(showingFieldItem, 0);
-
-
-        let statusGame = gameOver(nextSquares)
-        props.abc(statusGame);
-
-
-
-
-        // ДВИЖЕНИЕ КУБИКОВ   
-
-        function moveKey() {
-            // console.log('event.keyCode', event.keyCode);
-            if (event.keyCode == keysArr.right) {
-                keyRightMove();
-                function keyRightMove() {
-                    for (let y = 0; y < 4; y++) {
-                        const raw = [...nextSquares[y].filter((item) => (item != null))];
-                        for (let index = raw.length; index > 0; index--) {
-                            if ((raw[index] == raw[index - 1]) && (raw.length >= 2)) {
-                                raw[index] = raw[index] * 2;
-                                raw.splice((index - 1), 1);//
-                            }
-                        }
-                        while (raw.length != 4) {//формируем массив длиной 4;
-                            raw.unshift(null);
-                        }
-                        console.log(raw, 'raw');
-
-                        // console.log(nextSquares, 'nextSquares');
-
-
-                    }
-
-                    console.log('----------');
-
-
-
-                    //             for (let coll = 0; coll < 4; coll++) {
-                    //                 let emptyElement = [];
-                    //                 let filledElement = [];
-                    //                 let comparedElement;
-                    //                 for (let x = 3; x >= 0; x--) {
-                    //                     let element;
-                    //                     if (nextSquares[coll][x] == null) {
-                    //                         emptyElement.push(x);
-                    //                     }
-                    //                     else {
-                    //                         filledElement.push(x);
-                    //                         element = [coll, x];
-                    //                         if (filledElement.length) {
-                    //                             if (emptyElement.length) {
-
-                    //                                 if ((filledElement.length > 1) && (nextSquares[coll][x] == nextSquares[coll][filledElement[0]])) {//filledElement[0] НЕ ТАК!filledElement[filledElement.lenth-1]
-                    //                                     console.log('nextSquares', nextSquares[coll]);
-                    //                                     console.log('coll-', coll, 'x-', x);
-
-                    //                                     // nextSquares[coll][filledElement[0]] = nextSquares[coll][filledElement[0]] + nextSquares[coll][filledElement[1]];//ПЕРЕСМОТРЕТЬ
-                    //                                     nextSquares[coll][filledElement[0]] = nextSquares[coll][filledElement[0]] + nextSquares[coll][filledElement[1]];//ПЕРЕСМОТРЕТЬ
-                    //                                     nextSquares[coll][filledElement[1]] = null;
-                    //                                 } else {
-                    //                                     nextSquares[coll][emptyElement[0]] = nextSquares[coll][x];
-                    //                                     nextSquares[coll][x] = null;
-                    //                                 }
-                    //                                 filledElement.pop();
-                    //                                 filledElement.push(emptyElement[0]);
-
-                    //                                 emptyElement.shift();
-                    //                                 emptyElement.push(x);
-                    //                             }
-                    //                         }
-                    //                     }
-                    //                     element = undefined;
-                    //                 }
-                    //                 emptyElement = null;
-                    //                 filledElement = null;
-                    //             }
-                }
-
-            }
-        }
-        moveKey();
-
-        ///////////
-    }
-
-    let fieldSize = +props.fieldSize;//приём размеров поля через props
-    fieldSize = 4;
+    let [squares, setSquares] = useState(newArrNull(fieldSquareSize));
+    let [count, setCount] = useState(0);
 
     let arrRow = [];
     let arrField = [];
-    for (let i = 0; i < fieldSize; i++) {
-        for (let j = 0; j < fieldSize; j++) {
-            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => handleKey(randomIndex(), randomIndex(), event)
+    for (let i = 0; i < fieldSquareSize; i++) {
+        for (let j = 0; j < fieldSquareSize; j++) {
+            arrRow[j] = <Square key={`${i}${j}`} value={squares[i][j]} onSquareClick={(event) => ((handleKey(event)))
             }></Square >
         }
-        arrField.push(arrRow);
+        arrField.push(arrRow)
         arrRow = [];
     }
-    // console.log(arrField);
+
+    let gameStatusFlag = 1;
+    function gameOver() {
+        return (gamestatusEnd[gameStatusFlag]);
+    }
+
+    let countScore = (num) => {
+        if (typeof (num) != 'undefined') {
+            count += num;
+
+            if (count >= +localStorage.getItem('bestScore')) {
+                localStorage.setItem('bestScore', count)
+            }
+            return setCount(count);
+        }
+    };
+
+    let moveKey = function (event, nextArr) {
+        if (event.keyCode === keysArr.ArrowRight) {
+            return keyRightMove(nextArr, fieldSquareSize, countScore);
+        }
+        else if (event.keyCode === keysArr.ArrowLeft) {
+            return keyLeftMove(nextArr, fieldSquareSize, countScore);
+        }
+        else if (event.keyCode === keysArr.ArrowDown) {
+            return keyDownMove(nextArr, fieldSquareSize, countScore);
+        }
+        else if (event.keyCode === keysArr.ArrowUp) {
+            return keyUpMove(nextArr, fieldSquareSize, countScore);
+        }
+    };
+
+    let throttleMoveKey = _.throttle(moveKey, 200);
+
+    function addElement(nextSquares, event) {
+        let arr = Array.from(createArrFreeCell(nextSquares));
+        let randomElem = random(0, arr.length - 1);
+        if (event.key in keysArr) {
+            if (arr.length > 0) {
+                nextSquares[arr[randomElem]['i']][arr[randomElem]['j']] = randomNumForInput();
+            }
+        }
+        return nextSquares;
+    }
+
+    let createArrFreeCell = (nextFree) => {
+        let freeCellArr = [];
+        let emptyArrayCell = {};
+        for (let i = 0; i < nextFree.length; i++) {
+            for (let j = 0; j < nextFree[i].length; j++) {
+                if (nextFree[i][j] == null) {
+                    emptyArrayCell['i'] = i;
+                    emptyArrayCell['j'] = j;
+                    freeCellArr.push(emptyArrayCell);
+                    emptyArrayCell = {};
+                }
+            }
+        }
+        return (freeCellArr);
+    };
+
+    let isMove = (arrBefore, arrAfter) => {
+        if (_.isEqual(arrBefore, arrAfter)) {
+            console.log('массивы равны', _.isEqual(arrBefore, arrAfter))
+        }
+    }
+
+    let isHorizontalMove = (arr) => {
+        for (let index = arr.length - 1; index >= 0; index--) {
+            if ((arr[index] === arr[index - 1]) && (arr.length >= 2)) {
+            }
+        }
+    }
+
+    //прописать функцию через throttle
+    let handleKey = (event) => {
+        const nextSquares = _.cloneDeep(squares);
+        // let statusGame = gameOver(nextSquares);
+        // props.abc(statusGame);
+        let next = throttleMoveKey(event, nextSquares);
+        next = addElement(nextSquares, event);
+
+        if (isMove(nextSquares, squares)) {
+            if (isHorizontalMove(nextSquares)) {
+                console.log('есть горизонтальное движение')
+            }
+            else {
+                console.log('горизонтального движения НЕТ')
+            }
+        }
+        else {
+            setSquares(next);
+        }
+    }
+
+    let resetBtn = () => {
+        squares = _.cloneDeep(newArrNull(fieldSquareSize));
+        setCount(0);
+        return setSquares(squares);
+    }
+
+    const cssFieldStyle = {
+        position: 'absolute',
+        left: '50%',
+        transform: 'translate(-50%, 0)',
+        display: 'inline-grid',
+        gridTemplateColumns: `repeat(${fieldSquareSize}, ${1 / fieldSquareSize * 100}%)`
+    }
     return (
 
-        <div className="field" >
-            <React.Fragment >
-                {arrField}
-            </React.Fragment>
+        <div className="mainWrapper">
+            <div className="menu-countContainer">
+                <div className='footer2'>
+                    <NewGame resBtn={resetBtn}></NewGame>
+                    <Score scoreCounter={() => count}></Score>
+                </div>
+            </div>
+
+            <div className="field " style={cssFieldStyle}>
+                <React.Fragment>
+                    {arrField}
+                </React.Fragment>
+            </div>
+            <Footer></Footer>
         </div>
     );
-
 }
 
-
 export const arrField = () => arrField;
-
 export default Field;
-
-
-
-
-
-
-
-
-
-

@@ -5,18 +5,38 @@ h1 {
     border: 1px solid rgb(120, 110, 100);
 }
 
-/* 
-.square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
+h2 {
     text-align: center;
-    width: 34px;
-} */
+    color: rgb(120, 110, 100);
+    font-size: 45px;
+    /* font-size: 2em; */
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+/*.footer {*/
+/*    !*    display: flex;*!*/
+/*    !*flex-direction: row;*!*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    padding: 20px;*/
+/*}*/
+
+.new_game {
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+li {
+    padding: 10px 0;
+    color: rgb(83, 75, 68);
+}
+
+.rules_paragraph {
+    margin-left: 20px;
+    margin-right: 20px;
+}

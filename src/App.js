@@ -1,60 +1,73 @@
 import './App.css';
-import { useEffect, useRef, useState } from 'react';
-import Square from './Components/SquareComponent';
+import { useState } from 'react';
 import Field from './Components/FieldComponent';
 import Header from './Header/Header';
 import React from "react";
-import { render } from '@testing-library/react';
-import { gameStatusFlag } from './Components/FieldComponent';
-import { gamestatus } from './functionsAndConst/const';
-import { random, randomNumForInput, randomIndex } from './functionsAndConst/functions';
-// import { onSquareClick }
-
-// import { configureStore } from '@reduxjs/toolkit';
-
-// let fieldSquareSize = +prompt('input field size', 4);
-
-
-// // Получение рандомного элемента поля
-// export const seachElement = () => {
-//   let randomElement = document.getElementsByClassName('square__component')[randomIndex()];
-//   console.log(randomElement);
-// }
-
-
-
+import { gamestatusEnd } from './functionsAndConst/const';
+import NotFoundPage from './Components/NotFoundPage';
+import GameRulesPage from './Components/GameRulesPage';
+import {sizeUrl } from './functionsAndConst/const';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux';
+import LoginPage from './Components/Login';
+import { Route, Routes, Link, useSearchParams } from 'react-router-dom';
+import RegisterPage from './Components/Registration';
+import PrivateRoute from './Router/privateRoute';
+import NewComp from './Components/NewComp';
 
 const App = (props, onSquareClick) => {
 
-  const [header, setHeader] = useState(gamestatus[1])
+  const [header, setHeader] = useState(gamestatusEnd[1]);
 
+  let [searchParams] = useSearchParams();
+  const size = +searchParams.get('size');
+  let validSize = 4;
+  if (sizeUrl.includes(size)) {
+    validSize = size;
+  }
+//redux
+  const dispatch = useDispatch();
+  dispatch({ type: 'change_size', newSize: validSize });
+  useSelector(state => state.size.sizeReduser);
+// активная/неактивная ссылка
+  const [isLinkDisabled] = useState(true);//
 
 
   return (
-    <React.Fragment >
-      <Header
-        data={header}
+    <>
+      <Link to='/rules' className='main cursor'>Rules</Link>
+      <Link to='/login' className='main cursor'>Login</Link>
+      <Link to='/game' className='main cursor'>Game</Link>
 
-      >
-      </Header>
+        <Header data={header}></Header>
+      <Routes >
+        <Route path="/example" element={<NewComp></NewComp>} />
+        <Route path="/register" element={
+          <RegisterPage></RegisterPage>} />
 
-      <div id='fieldArea'
-      // ref={ref}
-      // tabIndex={-1}
-      // onKeyDown={handleKeyDown}
-      // onKeyDown={onSquareClick}
+        <Route path="/rules" element={<GameRulesPage />} />
 
-      >
-        <Field id='Field'
-          abc={setHeader}
-        // onKeyDown={}
-        >
-        </Field>
-      </div>
-    </React.Fragment >
+        <Route path="/login" element={
+          <LoginPage></LoginPage>} />
+
+
+        {isLinkDisabled
+          ?
+          <Route path="/game" element={<Field id='Field' abc={setHeader} sizeField={size}></Field>}></Route>
+          :
+          <Route element={PrivateRoute} />
+        }
+
+
+        <Route path="*" element={<NotFoundPage></NotFoundPage>} />
+
+      </Routes >
+    </>
   );
 };
+
 export default App;
+
 
 
 

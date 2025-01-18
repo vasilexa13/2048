@@ -7,6 +7,15 @@
   pointer-events: none;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
+.main {
+  color: #4b4b4b;
+  font-size: 24px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -38,21 +47,11 @@
   height: 100px;
 }
 
-.field {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  display: inline-grid;
-  grid-template-columns: repeat(4, 25%);
-
-
-}
-
 .square__component {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 48px;
+  font-size: 62px;
   color: #4b4b4b;
 }
 
@@ -60,4 +59,53 @@
   background: rgba(0, 0, 0, .55);
   z-index: 100;
   overflow: hidden;
+}
+
+.scale-up-center {
+  animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: #4b4b4b 1px solid;
+  margin: 10px;
+  color: #4b4b4b;
+}
+
+.login {
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3em;
+}
+
+.registration_link {
+  display: block;
+  color: #4b4b4b;
+  text-decoration: underline;
+  padding: 25px;
+  font-size: 21px;
+}
+
+.registration_link:hover {
+  cursor: pointer;
+  color: chocolate;
+}
+
+.disabled-link {
+  color: #999
 }
