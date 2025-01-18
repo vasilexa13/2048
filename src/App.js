@@ -6,7 +6,7 @@ import React from "react";
 import { gamestatus } from './functionsAndConst/const';
 import NotFoundPage from './Components/NotFoundPage';
 import GameRulesPage from './Components/GameRulesPage';
-import { fieldSquareSize, sizeUrl } from '../src/functionsAndConst/const';
+import {sizeUrl } from '../src/functionsAndConst/const';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux';
 import LoginPage from './Components/Login';

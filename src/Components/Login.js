@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { redirect } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage(props) {
@@ -8,7 +7,6 @@ function LoginPage(props) {
     const [pass, setPass] = useState('');
     const [mail, setMail] = useState('');
     const navigate = useNavigate();
-    // const headers = new Headers();
 
     async function clickHandler() {
         try {
@@ -35,12 +33,10 @@ function LoginPage(props) {
             } else {
                 const errorData = await response.json();
                 setdataFromNode(errorData.message);
-                // let token = localStorage.setItem("accessToken", '');
             }
         } catch (error) {
             console.error('Error:', error);
             setdataFromNode('Введите верные данные или зарегестрируйтесь');
-            // navigate('/login')
         }
     }
 

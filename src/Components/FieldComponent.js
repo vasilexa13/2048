@@ -11,8 +11,6 @@ import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from "../functionsA
 import Footer from "../Footer/Footer";
 import "./fieldComponent.css"
 
-const arrOfData = {};
-
 function Field(props) {
     // fetch с запросом к ендпоинту разрешения
     (async function clickHandler() {
@@ -39,7 +37,6 @@ function Field(props) {
 
     let [squares, setSquares] = useState(newArrNull(fieldSquareSize));
     let [count, setCount] = useState(0);
-    // console.log(count, 'count')
 
     let arrRow = [];
     let arrField = [];
