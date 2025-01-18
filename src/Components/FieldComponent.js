@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import React from "react";
 import Square from "./SquareComponent";
 import { useState } from "react";
-import { gamestatusEnd, keysArr } from "../functionsAndConst/const";
+import { keysArr } from "../functionsAndConst/const";
 import { randomNumForInput, newArrNull } from "../functionsAndConst/functions";
 import _, { random } from "lodash"
 import NewGame from '../Components/NewGame/NewGame'
@@ -11,10 +13,10 @@ import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from "../functionsA
 import Footer from "../Footer/Footer";
 import "./fieldComponent.css"
 
-function Field(props) {
+function Field() {
     // fetch с запросом к ендпоинту разрешения
     (async function clickHandler() {
-        const accessToken = await localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("accessToken");
         try {
             await fetch('http://localhost:3500/game', {
                 method: 'POST',
@@ -46,11 +48,6 @@ function Field(props) {
         }
         arrField.push(arrRow)
         arrRow = [];
-    }
-
-    let gameStatusFlag = 1;
-    function gameOver() {
-        return (gamestatusEnd[gameStatusFlag]);
     }
 
     let countScore = (num) => {
