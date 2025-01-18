@@ -17,11 +17,13 @@ h2 {
     flex-direction: column;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    padding: 20px;
-}
+/*.footer {*/
+/*    !*    display: flex;*!*/
+/*    !*flex-direction: row;*!*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    padding: 20px;*/
+/*}*/
 
 .new_game {
     padding: 15px;

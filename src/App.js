@@ -13,6 +13,7 @@ import LoginPage from './Components/Login';
 import { Route, Routes, Link, useSearchParams, Navigate } from 'react-router-dom';
 import RegisterPage from './Components/Registration';
 import PrivateRoute from './Router/privateRoute';
+import NewComp from './Components/NewComp';
 
 const App = (props, onSquareClick) => {
 
@@ -34,27 +35,20 @@ const App = (props, onSquareClick) => {
 
   // активная/неактивная ссылка
   const [isLinkDisabled, setIsLinkDisabled] = useState(true);//
-  function clickHandler(e) {
-    e.preventDefault();
-  }
+  // function clickHandler(e) {
+  //   e.preventDefault();
+  // }
 
   return (
     <>
       <Link to='/rules' className='main cursor'>Rules</Link>
       <Link to='/login' className='main cursor'>Login</Link>
+      <Link to='/game' className='main cursor'>Game</Link>
       {/* <Link to='/register' className='main cursor'>Registration</Link> */}
 
-      <React.Fragment>
-
-        {/* {(isLinkDisabled)
-          ? <Link to='/game' className='main cursor'>GamePage</Link>
-          : <Link to='/game' className='main cursor disabled-link' onClick={clickHandler}>GamePage (YOU SHOULD LOGIN)</Link>
-        } */}
-
-      </React.Fragment>
-
-      <Header data={header}></Header>
+        <Header data={header}></Header>
       <Routes >
+        <Route path="/example" element={<NewComp></NewComp>} />
         <Route path="/register" element={
           <RegisterPage></RegisterPage>} />
 
@@ -63,17 +57,18 @@ const App = (props, onSquareClick) => {
         <Route path="/login" element={
           <LoginPage></LoginPage>} />
 
-        <Route path="/game" element={<Field id='Field' abc={setHeader} sizeField={size}></Field>}></Route>
-        {/* {isLinkDisabled
-          ? 
+
+        {isLinkDisabled
+          ?
           <Route path="/game" element={<Field id='Field' abc={setHeader} sizeField={size}></Field>}></Route>
-          : <Route element={PrivateRoute} />
-        } */}
+          :
+          <Route element={PrivateRoute} />
+        }
+
 
         <Route path="*" element={<NotFoundPage></NotFoundPage>} />
 
       </Routes >
-
     </>
   );
 };

@@ -8,7 +8,6 @@ export function random(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     let randomNum = Math.floor(Math.random() * (max + 1 - min)) + min;
-    // console.log('случайное число:'randomNum);
     return randomNum;
 }
 
@@ -41,7 +40,6 @@ export let keyRightMove = (nextR, fieldSquareSize, countScore) => {
         for (let index = raw.length - 1; index >= 0; index--) {
             if ((raw[index] === raw[index - 1]) && (raw.length >= 2)) {
                 raw[index] = raw[index] * 2;
-                // score += raw[index];
                 countScore(raw[index]);
                 raw[index - 1] = null;
                 raw = raw.filter((item) => (item != null));
@@ -56,13 +54,14 @@ export let keyRightMove = (nextR, fieldSquareSize, countScore) => {
     return nextR;
 }
 
-export let keyLeftMove = (nextL, fieldSquareSize, scoreReducer) => {
+export let keyLeftMove = (nextL, fieldSquareSize, countScore) => {
     for (let y = 0; y < fieldSquareSize; y++) {
         let raw = [...nextL[y].filter((item) => (item != null))];
         for (let index = 0; index < raw.length - 1; index++) {
             if ((raw[index] === raw[index + 1]) && (raw.length >= 2)) {
                 raw[index] = raw[index] * 2;
-                scoreReducer += raw[index];
+                countScore(raw[index]);
+                // scoreReducer += raw[index];
                 raw[index + 1] = null;
                 raw = raw.filter((item) => (item != null));
                 raw.push(null);
@@ -76,7 +75,7 @@ export let keyLeftMove = (nextL, fieldSquareSize, scoreReducer) => {
     return nextL;
 }
 
-export let keyDownMove = (nextD, fieldSquareSize, scoreReducer) => {
+export let keyDownMove = (nextD, fieldSquareSize, countScore) => {
     let arr = [];
     let col = [];
     for (let x = 0; x < fieldSquareSize; x++) {
@@ -89,7 +88,7 @@ export let keyDownMove = (nextD, fieldSquareSize, scoreReducer) => {
         for (let index = col.length - 1; index >= 0; index--) {
             if ((col[index] === col[index - 1]) && (col.length >= 2)) {
                 col[index] = col[index] * 2;
-                scoreReducer += col[index];
+                countScore(col[index]);
                 col[index - 1] = null;
                 col = col.filter((item) => (item != null));
                 col.unshift(null);
@@ -105,7 +104,7 @@ export let keyDownMove = (nextD, fieldSquareSize, scoreReducer) => {
     return nextD;
 }
 
-export let keyUpMove = (nextU, fieldSquareSize, scoreReducer) => {
+export let keyUpMove = (nextU, fieldSquareSize, countScore) => {
     let arr = [];
     let col = [];
     for (let x = 0; x < fieldSquareSize; x++) {
@@ -118,7 +117,8 @@ export let keyUpMove = (nextU, fieldSquareSize, scoreReducer) => {
         for (let index = 0; index < col.length - 1; index++) {
             if ((col[index] === col[index + 1]) && (col.length >= 2)) {
                 col[index] = col[index] * 2;
-                scoreReducer += col[index];
+                countScore(col[index]);
+                // scoreReducer += col[index];
                 col[index + 1] = null;
                 col = col.filter((item) => (item != null));
                 col.push(null);
@@ -133,5 +133,6 @@ export let keyUpMove = (nextU, fieldSquareSize, scoreReducer) => {
     }
     return nextU;
 }
+
 
 

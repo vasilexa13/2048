@@ -6,8 +6,7 @@ function Score({ scoreCounter }) {
 
     return (
         <div>
-            <h2 className='score'
-            >SCORE:
+            <h2>SCORE:
                 {scoreCounter()}
             </h2>
         </div>

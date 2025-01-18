@@ -1,39 +1,46 @@
 import React, { useState } from 'react';
-import Cookies from 'js-cookie'
+import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage(props) {
     const [dataFromNode, setdataFromNode] = useState('Login Page');
     const [userName, setUsername] = useState('');
     const [pass, setPass] = useState('');
     const [mail, setMail] = useState('');
-
-    const headers = new Headers();
+    const navigate = useNavigate();
+    // const headers = new Headers();
 
     async function clickHandler() {
         try {
+            const accessToken = await localStorage.getItem("accessToken");
             const response = await fetch('http://localhost:3500/login', {
                 method: 'POST',
                 body: JSON.stringify({ userName, mail, pass }),
                 headers: {
                     'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${accessToken}`// наверное можем назначать headers не здесь а в game
                 },
-            });
+            })
 
-            if (response.status == 200) {//200
+            if (response.status === 200) {
                 const data = await response.json();
+                let token = await localStorage.setItem("accessToken", data.token.accessToken);
+                // headers.Authorization = `Bearer ${data.token.accessToken}`
 
-                Cookies.set('accessToken', data.token, { path: '/' });
+                // здесь проверка  валидности токена
+                // если токен валидный редирест на game
+                // иначе удаление из локал storage и кудиресе на login
                 setdataFromNode(data.message);
-
-                //НЕ устанавливается  
-                // headers.set('Authorization', `Bearer ${data.token}`);
+                navigate('/game');
             } else {
                 const errorData = await response.json();
                 setdataFromNode(errorData.message);
+                // let token = localStorage.setItem("accessToken", '');
             }
         } catch (error) {
             console.error('Error:', error);
-            setdataFromNode('Error during authentication');
+            setdataFromNode('Введите верные данные или зарегестрируйтесь');
+            // navigate('/login')
         }
     }
 
