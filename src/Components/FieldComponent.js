@@ -1,11 +1,11 @@
 import React from "react";
 import Square from "./SquareComponent";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { gamestatus, keysArr } from "../functionsAndConst/const";
-import { randomNumForInput, randomIndex, newArrNull } from "../functionsAndConst/functions";
-import _, { random, cloneDeep, isEqual } from "lodash"
+import { randomNumForInput, newArrNull } from "../functionsAndConst/functions";
+import _, { random } from "lodash"
 import NewGame from '../Components/NewGame/NewGame'
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Score from '../Components/Score';
 import { keyRightMove, keyLeftMove, keyDownMove, keyUpMove } from "../functionsAndConst/functions";
 import Footer from "../Footer/Footer";
@@ -16,19 +16,18 @@ function Field(props) {
     (async function clickHandler() {
         const accessToken = await localStorage.getItem("accessToken");
         try {
-            const response = await fetch('http://localhost:3500/game', {
+            await fetch('http://localhost:3500/game', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": `Bearer ${accessToken}`
                 },
-            })
+            });
         }
 
         catch (error) {
             console.error('Error:', error);
         }
-
     }
     )()
 

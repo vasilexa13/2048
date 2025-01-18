@@ -1,14 +1,9 @@
-// import { fieldSquareSize } from "./const";
-import { useSelector, useDispatch } from "react-redux";
-import { score } from '../Components/FieldComponent'
-import { a1 } from '../Components/Score';
 
 // Функция ВКЛЮЧАЕТ последний элемент
 export function random(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    let randomNum = Math.floor(Math.random() * (max + 1 - min)) + min;
-    return randomNum;
+    return Math.floor(Math.random() * (max + 1 - min)) + min;
 }
 
 // Генерация случайного числа 2 или 4... randomNumForInput
@@ -46,7 +41,7 @@ export let keyRightMove = (nextR, fieldSquareSize, countScore) => {
                 raw.unshift(null);
             }
         }
-        while (raw.length != fieldSquareSize) {
+        while (raw.length !== fieldSquareSize) {
             raw.unshift(null);
         }
         nextR[y] = raw;
@@ -67,7 +62,7 @@ export let keyLeftMove = (nextL, fieldSquareSize, countScore) => {
                 raw.push(null);
             }
         }
-        while (raw.length != fieldSquareSize) {
+        while (raw.length !== fieldSquareSize) {
             raw.push(null);
         }
         nextL[y] = raw;
@@ -94,7 +89,7 @@ export let keyDownMove = (nextD, fieldSquareSize, countScore) => {
                 col.unshift(null);
             }
         }
-        while (col.length != fieldSquareSize) {
+        while (col.length !== fieldSquareSize) {
             col.unshift(null);
         }
         for (let y = 0; y < fieldSquareSize; y++) {///переворот массива(транспонирование)
@@ -124,7 +119,7 @@ export let keyUpMove = (nextU, fieldSquareSize, countScore) => {
                 col.push(null);
             }
         }
-        while (col.length != fieldSquareSize) {
+        while (col.length !== fieldSquareSize) {
             col.push(null);
         }
         for (let y = 0; y < fieldSquareSize; y++) {///переворот массива(транспонирование)

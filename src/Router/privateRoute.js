@@ -1,4 +1,4 @@
-import { Outlet, Navigate, Route } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 
 //какой-то костыль но с ним работает 
 const PrivateRoute = () => {

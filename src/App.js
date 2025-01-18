@@ -6,11 +6,11 @@ import React from "react";
 import { gamestatus } from './functionsAndConst/const';
 import NotFoundPage from './Components/NotFoundPage';
 import GameRulesPage from './Components/GameRulesPage';
-import {sizeUrl } from '../src/functionsAndConst/const';
+import {sizeUrl } from './functionsAndConst/const';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux';
 import LoginPage from './Components/Login';
-import { Route, Routes, Link, useSearchParams, Navigate } from 'react-router-dom';
+import { Route, Routes, Link, useSearchParams } from 'react-router-dom';
 import RegisterPage from './Components/Registration';
 import PrivateRoute from './Router/privateRoute';
 import NewComp from './Components/NewComp';
@@ -19,32 +19,25 @@ const App = (props, onSquareClick) => {
 
   const [header, setHeader] = useState(gamestatus[1]);
 
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
   const size = +searchParams.get('size');
   let validSize = 4;
   if (sizeUrl.includes(size)) {
     validSize = size;
   }
-
-  let [sizeField, setSizeField] = useState(validSize);
-
-  //redux
+//redux
   const dispatch = useDispatch();
   dispatch({ type: 'change_size', newSize: validSize });
-  const sizeReduser = useSelector(state => state.size.sizeReduser);
+  useSelector(state => state.size.sizeReduser);
+// активная/неактивная ссылка
+  const [isLinkDisabled] = useState(true);//
 
-  // активная/неактивная ссылка
-  const [isLinkDisabled, setIsLinkDisabled] = useState(true);//
-  // function clickHandler(e) {
-  //   e.preventDefault();
-  // }
 
   return (
     <>
       <Link to='/rules' className='main cursor'>Rules</Link>
       <Link to='/login' className='main cursor'>Login</Link>
       <Link to='/game' className='main cursor'>Game</Link>
-      {/* <Link to='/register' className='main cursor'>Registration</Link> */}
 
         <Header data={header}></Header>
       <Routes >
